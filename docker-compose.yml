@@ -15,7 +15,7 @@ services:
     volumes:
       - tracehub_data:/data
       # Hot-swap code mount (no rebuild needed, just restart)
-      - /opt/kiberos-commander/tracehub/src/tracehub:/app/tracehub:ro
+      - /opt/tracehub/src/tracehub:/app/tracehub:ro
     networks:
       - web
     labels:
