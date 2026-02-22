@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  tracehub:
+    build: .
+    container_name: tracehub
+    restart: unless-stopped
+    ports:
+      - "8099:8099"
+    environment:
+      - TRACEHUB_PORT=8099
+      - TRACEHUB_DB=/data/tracehub.db
+      - TRACEHUB_RETENTION_HOURS=24
+      - TRACEHUB_SECRET=${TRACEHUB_SECRET}
+    volumes:
+      - tracehub_data:/data
+      # Hot-swap code mount (no rebuild needed, just restart)
+      - /opt/kiberos-commander/tracehub/src/tracehub:/app/tracehub:ro
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tracehub.rule=Host(`tracehub.muid.io`)"
+      - "traefik.http.routers.tracehub.entrypoints=websecure"
+      - "traefik.http.routers.tracehub.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tracehub.loadbalancer.server.port=8099"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8099/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  tracehub_data:
+    driver: local
+
+networks:
+  web:
+    external: true

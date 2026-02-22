@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tracehub"
+version = "0.1.0"
+description = "Centralized checkpoint trace collection and query service for distributed systems"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    {name = "LifeAiTools Dev Team", email = "dev@lifeaitools.com"}
+]
+keywords = [
+    "tracing",
+    "distributed-tracing",
+    "checkpoint",
+    "debugging",
+    "observability",
+    "correlation-id",
+    "microservices",
+    "fastapi",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: FastAPI",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: System :: Logging",
+]
+dependencies = [
+    "httpx>=0.25.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+server = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "aiosqlite>=0.19.0",
+]
+all = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "aiosqlite>=0.19.0",
+]
+
+[project.urls]
+Homepage = "https://muid.io"
+Repository = "https://github.com/lifeaitools/tracehub"
+
+[project.scripts]
+tracehub-server = "tracehub.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tracehub"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""
+
+[tool.hatch.build]
+exclude = [
+    "/.claude",
+    "/.env",
+    "/tests",
+    "*.toc",
+    "__pycache__",
+    "*.pyc",
+]
