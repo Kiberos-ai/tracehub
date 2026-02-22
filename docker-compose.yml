@@ -24,7 +24,7 @@ services:
       - "traefik.http.routers.tracehub.tls.certresolver=letsencrypt"
       - "traefik.http.services.tracehub.loadbalancer.server.port=8099"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8099/health"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8099/health')"]
       interval: 30s
       timeout: 5s
       retries: 3
