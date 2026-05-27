@@ -8,3 +8,9 @@ dist/
 .toc
 venv/
 .venv/
+node_modules/
+bun.lock
+drizzle/
+data/*.db
+data/*.db-wal
+data/*.db-shm

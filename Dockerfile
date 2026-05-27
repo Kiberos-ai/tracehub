@@ -1,25 +1,25 @@
-# TraceHub - Centralized Checkpoint Trace Collection
+# TracHub - Centralized Checkpoint Trace Collection
 # https://muid.io | LifeAiTools Dev Team
 
-FROM python:3.12-slim
-
-LABEL maintainer="dev@lifeaitools.com"
-LABEL description="TraceHub - Centralized checkpoint trace collection server"
-LABEL version="0.1.0"
-
+FROM oven/bun:slim AS base
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt .
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
+LABEL maintainer="dev@lifeaitools.com"
+LABEL description="TracHub - Centralized checkpoint trace collection server"
+LABEL version="1.0.0"
 
-# Copy application code
-COPY src/tracehub/ ./tracehub/
+# Install deps
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile --production
 
-# Create data directory for SQLite persistence
+# Copy source
+COPY src/ ./src/
+COPY drizzle.config.ts ./
+
+# Data dir
 RUN mkdir -p /data
 
-# Environment defaults
+# Env defaults
 ENV TRACEHUB_PORT=8099
 ENV TRACEHUB_DB=/data/tracehub.db
 ENV TRACEHUB_RETENTION_HOURS=72
@@ -27,8 +27,7 @@ ENV TRACEHUB_SECRET=""
 
 EXPOSE 8099
 
-# Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8099/health')" || exit 1
+    CMD bun -e "fetch('http://localhost:8099/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))" || exit 1
 
-CMD ["python", "-m", "tracehub"]
+CMD ["bun", "run", "src/index.ts"]

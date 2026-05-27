@@ -10,10 +10,16 @@ services:
       - TRACEHUB_DB=/data/tracehub.db
       - TRACEHUB_RETENTION_HOURS=24
       - TRACEHUB_SECRET=${TRACEHUB_SECRET}
+      - MAX_LONGPOLL_CONNECTIONS=${MAX_LONGPOLL_CONNECTIONS:-200}
+      - TRACEHUB_RATE_INGEST=${TRACEHUB_RATE_INGEST:-120}
+      - TRACEHUB_RATE_CONFIG=${TRACEHUB_RATE_CONFIG:-10}
+      - TRACEHUB_RATE_QUERY=${TRACEHUB_RATE_QUERY:-60}
+      - TRACEHUB_BAN_WARNING=${TRACEHUB_BAN_WARNING:-60}
+      - TRACEHUB_BAN_HARD=${TRACEHUB_BAN_HARD:-300}
     volumes:
       - tracehub_data:/data
       # Hot-swap code mount (no rebuild needed, just restart)
-      - /opt/tracehub/src/tracehub:/app/tracehub:ro
+      - /opt/tracehub/src:/app/src:ro
     networks:
       - web
     labels:
@@ -24,7 +30,7 @@ services:
       - "traefik.http.routers.tracehub.tls.certresolver=letsencrypt"
       - "traefik.http.services.tracehub.loadbalancer.server.port=8099"
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8099/health')"]
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:8099/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
       interval: 30s
       timeout: 5s
       retries: 3

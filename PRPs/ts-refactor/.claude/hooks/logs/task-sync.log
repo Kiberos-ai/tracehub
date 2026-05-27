@@ -1,0 +1,295 @@
+[2026-05-27T11:39:53.334130+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:39:53.334283+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 0: Initialize Bun + Hono + Drizzle project", "description": "Project scaffold: package.json, tsconfig, biome, drizzle config, lib/config.ts with all env vars", "activeForm": "Initializing project scaffold"}
+[2026-05-27T11:39:53.334320+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:39:53.334348+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "1", "subject": "Task 0: Initialize Bun + Hono + Drizzle project"}}
+[2026-05-27T11:39:53.334367+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 1
+[2026-05-27T11:39:53.334393+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "1", "subject": "Task 0: Initialize Bun + Hono + Drizzle project", "status": "pending", "description": "Project scaffold: package.json, tsconfig, biome, drizzle config, lib/config.ts with all env vars"}
+[2026-05-27T11:39:54.075231+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True, 'hints': {'shown': [{'command': 'context current list', 'description': 'View all TODOs including synced ones', 'level': 'info'}, {'command': 'context current sync --status', 'description': 'Check sync status', 'level': 'info'}], 'suppressed': []}}
+[2026-05-27T11:39:58.874742+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:39:58.874845+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 1: Drizzle schema + DB layer", "description": "schema.ts, client.ts (WAL mode), operations.ts (insert/query/dedup/cleanup)", "activeForm": "Creating DB layer"}
+[2026-05-27T11:39:58.874864+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:39:58.874882+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "2", "subject": "Task 1: Drizzle schema + DB layer"}}
+[2026-05-27T11:39:58.874895+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 2
+[2026-05-27T11:39:58.874912+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "2", "subject": "Task 1: Drizzle schema + DB layer", "status": "pending", "description": "schema.ts, client.ts (WAL mode), operations.ts (insert/query/dedup/cleanup)"}
+[2026-05-27T11:39:59.052140+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:00.269196+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:00.269266+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 2: Zod models + auth/client-id middleware", "description": "types.ts (Zod schemas), auth.ts, client-id.ts middleware", "activeForm": "Creating models and middleware"}
+[2026-05-27T11:40:00.269285+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:00.269302+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "3", "subject": "Task 2: Zod models + auth/client-id middleware"}}
+[2026-05-27T11:40:00.269315+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 3
+[2026-05-27T11:40:00.269330+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "3", "subject": "Task 2: Zod models + auth/client-id middleware", "status": "pending", "description": "types.ts (Zod schemas), auth.ts, client-id.ts middleware"}
+[2026-05-27T11:40:00.432312+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:02.146565+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:02.146625+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 3: Core endpoints (ingest, query, health, stats)", "description": "routes/ingest.ts, query.ts, admin.ts, health.ts \u2014 matching Python JSON responses 1:1", "activeForm": "Building core endpoints"}
+[2026-05-27T11:40:02.146660+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:02.146680+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "4", "subject": "Task 3: Core endpoints (ingest, query, health, stats)"}}
+[2026-05-27T11:40:02.146692+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 4
+[2026-05-27T11:40:02.146709+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "4", "subject": "Task 3: Core endpoints (ingest, query, health, stats)", "status": "pending", "description": "routes/ingest.ts, query.ts, admin.ts, health.ts \u2014 matching Python JSON responses 1:1"}
+[2026-05-27T11:40:02.289966+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:03.613693+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:03.613763+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 4: Adaptive tracing state machine", "description": "services/adaptive.ts + routes/tracing.ts \u2014 HOT/WARM/COLD with auto-HOT on query", "activeForm": "Implementing adaptive tracing"}
+[2026-05-27T11:40:03.613782+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:03.613799+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "5", "subject": "Task 4: Adaptive tracing state machine"}}
+[2026-05-27T11:40:03.613811+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 5
+[2026-05-27T11:40:03.613826+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "5", "subject": "Task 4: Adaptive tracing state machine", "status": "pending", "description": "services/adaptive.ts + routes/tracing.ts \u2014 HOT/WARM/COLD with auto-HOT on query"}
+[2026-05-27T11:40:03.759950+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:05.072315+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:05.072391+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 5: Long-poll on /tracing/config", "description": "services/long-poll.ts + update tracing route \u2014 Prefer: wait, waiter set, connection cap", "activeForm": "Implementing long-poll"}
+[2026-05-27T11:40:05.072420+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:05.072446+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "6", "subject": "Task 5: Long-poll on /tracing/config"}}
+[2026-05-27T11:40:05.072464+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 6
+[2026-05-27T11:40:05.072486+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "6", "subject": "Task 5: Long-poll on /tracing/config", "status": "pending", "description": "services/long-poll.ts + update tracing route \u2014 Prefer: wait, waiter set, connection cap"}
+[2026-05-27T11:40:05.212964+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:06.501899+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:06.501964+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 6: SSE streaming", "description": "services/streaming.ts + /traces/:corrId/stream with heartbeat", "activeForm": "Implementing SSE streaming"}
+[2026-05-27T11:40:06.501986+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:06.502004+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "7", "subject": "Task 6: SSE streaming"}}
+[2026-05-27T11:40:06.502017+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 7
+[2026-05-27T11:40:06.502042+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "7", "subject": "Task 6: SSE streaming", "status": "pending", "description": "services/streaming.ts + /traces/:corrId/stream with heartbeat"}
+[2026-05-27T11:40:06.650745+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:07.918595+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:07.918708+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 7: Abuse protection middleware", "description": "middleware/rate-limit.ts \u2014 three-tier: rate limit \u2192 warning ban \u2192 hard ban", "activeForm": "Building abuse protection"}
+[2026-05-27T11:40:07.918741+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:07.918767+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "8", "subject": "Task 7: Abuse protection middleware"}}
+[2026-05-27T11:40:07.918785+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 8
+[2026-05-27T11:40:07.918808+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "8", "subject": "Task 7: Abuse protection middleware", "status": "pending", "description": "middleware/rate-limit.ts \u2014 three-tier: rate limit \u2192 warning ban \u2192 hard ban"}
+[2026-05-27T11:40:08.089951+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:08.925992+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:08.926050+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 8: App assembly + lifecycle", "description": "app.ts + index.ts \u2014 route mounting, cleanup loop, startup logging, Bun.serve", "activeForm": "Assembling app"}
+[2026-05-27T11:40:08.926068+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:08.926085+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "9", "subject": "Task 8: App assembly + lifecycle"}}
+[2026-05-27T11:40:08.926098+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 9
+[2026-05-27T11:40:08.926113+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "9", "subject": "Task 8: App assembly + lifecycle", "status": "pending", "description": "app.ts + index.ts \u2014 route mounting, cleanup loop, startup logging, Bun.serve"}
+[2026-05-27T11:40:09.077226+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:10.323384+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:10.323468+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 9: Dockerfile + docker-compose", "description": "Rewrite for oven/bun:slim, update mounts and healthcheck", "activeForm": "Updating Docker config"}
+[2026-05-27T11:40:10.323497+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:10.323523+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "10", "subject": "Task 9: Dockerfile + docker-compose"}}
+[2026-05-27T11:40:10.323542+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 10
+[2026-05-27T11:40:10.323562+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "10", "subject": "Task 9: Dockerfile + docker-compose", "status": "pending", "description": "Rewrite for oven/bun:slim, update mounts and healthcheck"}
+[2026-05-27T11:40:10.477240+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:12.220942+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:12.221037+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 10: TS SDK (@tracehub/sdk)", "description": "sdk/ package \u2014 batch sender, long-poll config, shouldTrace, backpressure, logger", "activeForm": "Building TS SDK"}
+[2026-05-27T11:40:12.221066+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:12.221090+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "11", "subject": "Task 10: TS SDK (@tracehub/sdk)"}}
+[2026-05-27T11:40:12.221108+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 11
+[2026-05-27T11:40:12.221129+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "11", "subject": "Task 10: TS SDK (@tracehub/sdk)", "status": "pending", "description": "sdk/ package \u2014 batch sender, long-poll config, shouldTrace, backpressure, logger"}
+[2026-05-27T11:40:12.380787+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:13.654728+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:13.654802+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 11: Python SDK update (checktrace 1.0.0)", "description": "Long-poll, X-TraceHub-Client header, 429 handling in checktrace", "activeForm": "Updating Python SDK"}
+[2026-05-27T11:40:13.654820+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:13.654838+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "12", "subject": "Task 11: Python SDK update (checktrace 1.0.0)"}}
+[2026-05-27T11:40:13.654850+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 12
+[2026-05-27T11:40:13.654865+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "12", "subject": "Task 11: Python SDK update (checktrace 1.0.0)", "status": "pending", "description": "Long-poll, X-TraceHub-Client header, 429 handling in checktrace"}
+[2026-05-27T11:40:13.805107+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:15.055703+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskCreate
+[2026-05-27T11:40:15.055773+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"subject": "Task 12: E2E validation + backward compat", "description": "Full E2E test: all endpoints, long-poll, adaptive_hint, abuse protection, old SDK compat", "activeForm": "Running E2E validation"}
+[2026-05-27T11:40:15.055794+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:15.055816+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"task": {"id": "13", "subject": "Task 12: E2E validation + backward compat"}}
+[2026-05-27T11:40:15.055829+00:00] [INFO] [34a5e51d] [DEBUG] Extracted actual_task_id: 13
+[2026-05-27T11:40:15.055844+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "13", "subject": "Task 12: E2E validation + backward compat", "status": "pending", "description": "Full E2E test: all endpoints, long-poll, adaptive_hint, abuse protection, old SDK compat"}
+[2026-05-27T11:40:15.210198+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:19.864315+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:40:19.864409+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "1", "status": "in_progress"}
+[2026-05-27T11:40:19.864439+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:19.864465+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "1", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:40:19.864489+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "1", "subject": null, "status": "in_progress"}
+[2026-05-27T11:40:20.016089+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:20.391235+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:40:20.391306+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "2", "status": "in_progress"}
+[2026-05-27T11:40:20.391325+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:20.391343+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "2", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:40:20.391359+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "2", "subject": null, "status": "in_progress"}
+[2026-05-27T11:40:20.544439+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:40:20.608810+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:40:20.608866+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "3", "status": "in_progress"}
+[2026-05-27T11:40:20.608885+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:40:20.608903+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "3", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:40:20.608918+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "3", "subject": null, "status": "in_progress"}
+[2026-05-27T11:40:20.754161+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:13.738896+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:13.739092+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "1", "status": "completed"}
+[2026-05-27T11:44:13.739127+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:13.739159+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "1", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:44:13.739187+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "1", "subject": null, "status": "completed"}
+[2026-05-27T11:44:13.965221+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:14.266093+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:14.266172+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "2", "status": "completed"}
+[2026-05-27T11:44:14.266199+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:14.266226+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "2", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:44:14.266249+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "2", "subject": null, "status": "completed"}
+[2026-05-27T11:44:14.475237+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:14.489524+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:14.489579+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "3", "status": "completed"}
+[2026-05-27T11:44:14.489598+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:14.489625+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "3", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:44:14.489650+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "3", "subject": null, "status": "completed"}
+[2026-05-27T11:44:14.661975+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:33.047410+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:33.047482+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "1", "status": "completed"}
+[2026-05-27T11:44:33.047500+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:33.047516+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "1", "updatedFields": []}
+[2026-05-27T11:44:33.047531+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "1", "subject": null, "status": "completed"}
+[2026-05-27T11:44:33.186584+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:33.584154+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:33.584249+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "2", "status": "completed"}
+[2026-05-27T11:44:33.584276+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:33.584299+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "2", "updatedFields": []}
+[2026-05-27T11:44:33.584322+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "2", "subject": null, "status": "completed"}
+[2026-05-27T11:44:33.589958+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:33.590014+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "3", "status": "completed"}
+[2026-05-27T11:44:33.590032+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:33.590049+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "3", "updatedFields": []}
+[2026-05-27T11:44:33.590065+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "3", "subject": null, "status": "completed"}
+[2026-05-27T11:44:33.745746+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:33.753285+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:34.066179+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:34.066248+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "4", "status": "in_progress"}
+[2026-05-27T11:44:34.066266+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:34.066285+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "4", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:44:34.066301+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "4", "subject": null, "status": "in_progress"}
+[2026-05-27T11:44:34.212778+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:44:34.464430+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:44:34.464508+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "5", "status": "in_progress"}
+[2026-05-27T11:44:34.464534+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:44:34.464552+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "5", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:44:34.464569+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "5", "subject": null, "status": "in_progress"}
+[2026-05-27T11:44:34.614531+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:47:22.322023+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:47:22.322123+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "4", "status": "completed"}
+[2026-05-27T11:47:22.322169+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:47:22.322234+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "4", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:47:22.322268+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "4", "subject": null, "status": "completed"}
+[2026-05-27T11:47:22.473970+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True, 'hints': {'shown': [{'command': 'context current list', 'description': 'View all TODOs including synced ones', 'level': 'info'}, {'command': 'context current sync --status', 'description': 'Check sync status', 'level': 'info'}], 'suppressed': []}}
+[2026-05-27T11:47:22.784187+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:47:22.784260+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "5", "status": "completed"}
+[2026-05-27T11:47:22.784279+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:47:22.784297+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "5", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:47:22.784314+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "5", "subject": null, "status": "completed"}
+[2026-05-27T11:47:22.932435+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:48:12.280060+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:48:12.280146+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "4", "status": "completed"}
+[2026-05-27T11:48:12.280165+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:48:12.280182+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "4", "updatedFields": []}
+[2026-05-27T11:48:12.280199+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "4", "subject": null, "status": "completed"}
+[2026-05-27T11:48:12.424483+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:48:12.424574+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "5", "status": "completed"}
+[2026-05-27T11:48:12.424596+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:48:12.424613+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "5", "updatedFields": []}
+[2026-05-27T11:48:12.424641+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "5", "subject": null, "status": "completed"}
+[2026-05-27T11:48:12.453796+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:48:12.571983+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:48:12.744409+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:48:12.744473+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "6", "status": "in_progress"}
+[2026-05-27T11:48:12.744493+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:48:12.744511+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "6", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:48:12.744526+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "6", "subject": null, "status": "in_progress"}
+[2026-05-27T11:48:12.892171+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:48:13.177229+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:48:13.177303+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "7", "status": "in_progress"}
+[2026-05-27T11:48:13.177321+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:48:13.177339+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "7", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:48:13.177356+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "7", "subject": null, "status": "in_progress"}
+[2026-05-27T11:48:13.319205+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:48:13.448602+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:48:13.448678+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "8", "status": "in_progress"}
+[2026-05-27T11:48:13.448701+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:48:13.448721+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "8", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:48:13.448737+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "8", "subject": null, "status": "in_progress"}
+[2026-05-27T11:48:13.592342+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:52:39.470173+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:52:39.470252+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "6", "status": "completed"}
+[2026-05-27T11:52:39.470271+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:52:39.470290+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "6", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:52:39.470308+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "6", "subject": null, "status": "completed"}
+[2026-05-27T11:52:39.619913+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True, 'hints': {'shown': [{'command': 'context current list', 'description': 'View all TODOs including synced ones', 'level': 'info'}, {'command': 'context current sync --status', 'description': 'Check sync status', 'level': 'info'}], 'suppressed': []}}
+[2026-05-27T11:52:39.939878+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:52:39.939979+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "7", "status": "completed"}
+[2026-05-27T11:52:39.940010+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:52:39.940034+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "7", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:52:39.940055+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "7", "subject": null, "status": "completed"}
+[2026-05-27T11:52:40.089241+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:52:40.301313+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:52:40.301413+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "8", "status": "completed"}
+[2026-05-27T11:52:40.301439+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:52:40.301462+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "8", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:52:40.301484+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "8", "subject": null, "status": "completed"}
+[2026-05-27T11:52:40.469505+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:53:39.374963+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:53:39.375029+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "6", "status": "completed"}
+[2026-05-27T11:53:39.375047+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:53:39.375064+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "6", "updatedFields": []}
+[2026-05-27T11:53:39.375080+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "6", "subject": null, "status": "completed"}
+[2026-05-27T11:53:39.526999+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:53:39.887140+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:53:39.887205+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "7", "status": "completed"}
+[2026-05-27T11:53:39.887225+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:53:39.887242+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "7", "updatedFields": []}
+[2026-05-27T11:53:39.887263+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "7", "subject": null, "status": "completed"}
+[2026-05-27T11:53:40.045534+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:53:40.326410+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:53:40.326471+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "8", "status": "completed"}
+[2026-05-27T11:53:40.326489+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:53:40.326506+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "8", "updatedFields": []}
+[2026-05-27T11:53:40.326521+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "8", "subject": null, "status": "completed"}
+[2026-05-27T11:53:40.474032+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:53:40.805776+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:53:40.805852+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "9", "status": "in_progress"}
+[2026-05-27T11:53:40.805875+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:53:40.805895+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "9", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:53:40.805914+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "9", "subject": null, "status": "in_progress"}
+[2026-05-27T11:53:40.904154+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:53:40.904237+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "10", "status": "in_progress"}
+[2026-05-27T11:53:40.904261+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:53:40.904286+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "10", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:53:40.904308+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "10", "subject": null, "status": "in_progress"}
+[2026-05-27T11:53:40.965354+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:53:41.053417+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:56:48.007722+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:56:48.007804+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "9", "status": "completed"}
+[2026-05-27T11:56:48.007827+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:56:48.007850+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "9", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:56:48.007871+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "9", "subject": null, "status": "completed"}
+[2026-05-27T11:56:48.158039+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:56:48.491310+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:56:48.491386+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "11", "status": "in_progress"}
+[2026-05-27T11:56:48.491404+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:56:48.491423+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "11", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:56:48.491441+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "11", "subject": null, "status": "in_progress"}
+[2026-05-27T11:56:48.520040+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:56:48.520121+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "10", "status": "completed"}
+[2026-05-27T11:56:48.520145+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:56:48.520166+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "10", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T11:56:48.520187+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "10", "subject": null, "status": "completed"}
+[2026-05-27T11:56:48.655229+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:56:48.691558+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T11:56:48.946061+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T11:56:48.946134+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "12", "status": "in_progress"}
+[2026-05-27T11:56:48.946159+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T11:56:48.946185+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "12", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T11:56:48.946207+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "12", "subject": null, "status": "in_progress"}
+[2026-05-27T11:56:49.103844+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T12:00:17.468748+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T12:00:17.468998+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "11", "status": "completed"}
+[2026-05-27T12:00:17.469026+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T12:00:17.469048+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "11", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T12:00:17.469067+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "11", "subject": null, "status": "completed"}
+[2026-05-27T12:00:17.618274+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True, 'hints': {'shown': [{'command': 'context current list', 'description': 'View all TODOs including synced ones', 'level': 'info'}, {'command': 'context current sync --status', 'description': 'Check sync status', 'level': 'info'}], 'suppressed': []}}
+[2026-05-27T12:00:55.694634+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T12:00:55.694709+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "12", "status": "completed"}
+[2026-05-27T12:00:55.694727+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T12:00:55.694744+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "12", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T12:00:55.694760+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "12", "subject": null, "status": "completed"}
+[2026-05-27T12:00:55.843061+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T12:00:55.962678+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T12:00:55.962743+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "13", "status": "in_progress"}
+[2026-05-27T12:00:55.962761+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T12:00:55.962779+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "13", "updatedFields": ["status"], "statusChange": {"from": "pending", "to": "in_progress"}}
+[2026-05-27T12:00:55.962796+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "13", "subject": null, "status": "in_progress"}
+[2026-05-27T12:00:56.106126+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}
+[2026-05-27T12:05:07.866424+00:00] [INFO] [34a5e51d] [DEBUG] tool_name: TaskUpdate
+[2026-05-27T12:05:07.866675+00:00] [INFO] [34a5e51d] [DEBUG] tool_input: {"taskId": "13", "status": "completed"}
+[2026-05-27T12:05:07.866706+00:00] [INFO] [34a5e51d] [DEBUG] tool_response type: dict
+[2026-05-27T12:05:07.866726+00:00] [INFO] [34a5e51d] [DEBUG] tool_response: {"success": true, "taskId": "13", "updatedFields": ["status"], "statusChange": {"from": "in_progress", "to": "completed"}}
+[2026-05-27T12:05:07.866743+00:00] [INFO] [34a5e51d] [DEBUG] Calling context sync with task_data: {"taskId": "13", "subject": null, "status": "completed"}
+[2026-05-27T12:05:08.010400+00:00] [INFO] [34a5e51d] [DEBUG] sync_result: {'command': 'current.sync', 'data': {'action': 'skipped_no_project', 'reason': "Session not bound to any project. Use 'context session bind' first."}, 'success': True}

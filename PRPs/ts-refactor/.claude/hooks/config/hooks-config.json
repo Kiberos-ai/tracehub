@@ -1,0 +1,26 @@
+{
+  "hooks_enabled": true,
+  "context_monitor": {
+    "enabled": true,
+    "thresholds": {
+      "gentle_warning": 95,
+      "strong_warning": 97,
+      "critical_warning": 100
+    },
+    "warning_cooldown_minutes": 15,
+    "model_context_limits": {
+      "claude-opus-4-6": 990000,
+      "claude-sonnet-4-6": 990000,
+      "claude-sonnet-4-5": 200000,
+      "claude-opus-4": 200000,
+      "default": 200000
+    }
+  },
+  "toc_generator": {
+    "enabled": true,
+    "min_file_size_lines": 50,
+    "smart_toc_args": [],
+    "reminder_cooldown_minutes": 30,
+    "auto_create_toc": true
+  }
+}
