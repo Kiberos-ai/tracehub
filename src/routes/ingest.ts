@@ -36,8 +36,9 @@ const onTraceInserted: (trace: TraceEntry) => void = notifySubscribers;
 
 export const ingestRouter = new Hono();
 
-// Auth middleware on all ingest routes
-ingestRouter.use("/*", authMiddleware);
+// Auth middleware scoped to /ingest paths only
+ingestRouter.use("/ingest/*", authMiddleware);
+ingestRouter.use("/ingest", authMiddleware);
 
 ingestRouter.post(
 	"/ingest",
