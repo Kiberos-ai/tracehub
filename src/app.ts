@@ -7,6 +7,7 @@ import { ingestRouter } from "./routes/ingest";
 import { queryRouter } from "./routes/query";
 import { tracingRouter } from "./routes/tracing";
 import { adminRouter } from "./routes/admin";
+import { docsRouter } from "./routes/docs";
 
 // =============================================================================
 // Hono app assembly
@@ -34,5 +35,6 @@ app.route("/", ingestRouter);
 app.route("/", queryRouter);
 app.route("/", tracingRouter);
 app.route("/", adminRouter);
+app.route("/", docsRouter);
 
 export { app };
