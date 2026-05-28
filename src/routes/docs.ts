@@ -234,7 +234,7 @@ docsRouter.get("/llms-full.txt", (c) => {
 // GET /docs/:page.md — individual doc pages
 // -----------------------------------------------------------------------------
 
-const DOC_PAGES: Record<string, string> = {
+export const DOC_PAGES: Record<string, string> = {
 	"integration.md": `# TracHub Integration Guide
 
 ## Overview

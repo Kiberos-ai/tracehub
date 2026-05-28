@@ -50,3 +50,22 @@ export const TRACEHUB_BAN_WARNING = Number(process.env.TRACEHUB_BAN_WARNING ?? "
 
 /** Hard ban duration in seconds */
 export const TRACEHUB_BAN_HARD = Number(process.env.TRACEHUB_BAN_HARD ?? "300");
+
+// =============================================================================
+// Docs provider (context777 ingest) — embeds @context777/provider so TracHub's
+// own docs are pulled into the context777 documentation index.
+// =============================================================================
+
+/** context777 central base URL (empty = standalone, serve manifest/export only). */
+export const DOCS_CENTRAL_URL = process.env.TRACEHUB_DOCS_CENTRAL_URL ?? "";
+
+/** Shared secret used to register/notify the context777 central. */
+export const DOCS_SOURCE_SECRET = process.env.TRACEHUB_DOCS_SOURCE_SECRET ?? "";
+
+/** Public base URL where this service's docs-provider router is reachable. */
+export const DOCS_PROVIDER_URL =
+	process.env.TRACEHUB_DOCS_PROVIDER_URL ?? "https://tracehub.muid.io/help/api";
+
+/** Public base URL for doc pages (used as canonical pageUrl in the index). */
+export const DOCS_PUBLIC_BASE =
+	process.env.TRACEHUB_DOCS_PUBLIC_BASE ?? "https://tracehub.muid.io/docs";

@@ -13,6 +13,8 @@ import { cleanupStaleSubscribers } from "./services/streaming";
 import { cleanupRateLimitState } from "./middleware/rate-limit";
 import { getSourceIngestWindow } from "./routes/ingest";
 import { getRecentRateWindow } from "./routes/query";
+import { docsProvider } from "./docs-provider";
+import { DOCS_CENTRAL_URL } from "./lib/config";
 
 // =============================================================================
 // Database initialization
@@ -85,6 +87,21 @@ const server = Bun.serve({
 
 console.error(`[TracHub] Listening on 0.0.0.0:${server.port}`);
 
+// Docs provider — build index, register with context777, push notify on change.
+// Graceful: failures here never affect the trace-collection service.
+docsProvider
+	.start()
+	.then(() => {
+		const { pages, chunks } = docsProvider.store.stats();
+		console.error(
+			`[TracHub] Docs provider ready at /help/api (${pages} pages, ${chunks} chunks)` +
+				(DOCS_CENTRAL_URL ? ` → registered with ${DOCS_CENTRAL_URL}` : " (standalone)"),
+		);
+	})
+	.catch((e) =>
+		console.error(`[TracHub] Docs provider start failed: ${e instanceof Error ? e.message : e}`),
+	);
+
 // =============================================================================
 // Graceful shutdown
 // =============================================================================
@@ -92,6 +109,7 @@ console.error(`[TracHub] Listening on 0.0.0.0:${server.port}`);
 function shutdown() {
 	console.error("[TracHub] Shutting down...");
 	clearInterval(cleanupInterval);
+	docsProvider.stop();
 	server.stop();
 	process.exit(0);
 }
