@@ -8,8 +8,8 @@ LABEL maintainer="dev@lifeaitools.com"
 LABEL description="TracHub - Centralized checkpoint trace collection server"
 LABEL version="1.0.0"
 
-# Install deps
-COPY package.json bun.lock* ./
+# Install deps (bunfig.toml maps the @context777 scope to npm.muid.io)
+COPY package.json bun.lock* bunfig.toml ./
 RUN bun install --frozen-lockfile --production
 
 # Copy source
