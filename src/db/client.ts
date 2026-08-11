@@ -4,7 +4,7 @@ import { TRACEHUB_DB } from "../lib/config";
 import * as schema from "./schema";
 
 // Ensure data directory exists
-import { mkdirSync } from "node:fs";
+import { mkdirSync, statSync } from "node:fs";
 import { dirname } from "node:path";
 mkdirSync(dirname(TRACEHUB_DB), { recursive: true });
 
@@ -25,8 +25,29 @@ const autoVacuumMode =
 if (autoVacuumMode !== 2 /* INCREMENTAL */) {
 	sqlite.exec("PRAGMA auto_vacuum = INCREMENTAL");
 	sqlite.exec("VACUUM");
-	checkpointTruncate();
 	console.error("[TracHub] DB converted to auto_vacuum=INCREMENTAL (one-time VACUUM)");
+}
+
+// Reclaim on every start, not only on conversion: a database converted by an
+// earlier build still carries its historical file size until something
+// checkpoints it, and a restart is the one moment with no readers to block.
+{
+	const sizeBefore = dbFileSizeMb();
+	checkpointTruncate();
+	sqlite.exec("PRAGMA incremental_vacuum");
+	checkpointTruncate();
+	const sizeAfter = dbFileSizeMb();
+	if (sizeBefore - sizeAfter >= 1) {
+		console.error(`[TracHub] Reclaimed ${Math.round(sizeBefore - sizeAfter)} MB of free pages`);
+	}
+}
+
+function dbFileSizeMb(): number {
+	try {
+		return statSync(TRACEHUB_DB).size / 1024 / 1024;
+	} catch {
+		return 0;
+	}
 }
 
 /**
