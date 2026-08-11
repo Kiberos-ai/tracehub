@@ -52,7 +52,15 @@ export async function startServer(
 	})();
 
 	const url = `http://localhost:${port}`;
-	await waitForHealth(url, proc);
+	try {
+		await waitForHealth(url, proc, () => stderrText);
+	} catch (e) {
+		// A failed boot must not leave the process holding the port: afterAll never
+		// runs when beforeAll throws, and the next run would fail for the wrong reason.
+		proc.kill();
+		await proc.exited.catch(() => {});
+		throw e;
+	}
 
 	return {
 		url,
@@ -67,21 +75,41 @@ export async function startServer(
 	};
 }
 
-async function waitForHealth(url: string, proc: Bun.Subprocess): Promise<void> {
-	const deadline = Date.now() + 15_000;
+async function waitForHealth(
+	url: string,
+	proc: Bun.Subprocess,
+	stderr: () => string,
+): Promise<void> {
+	// Under bun's 5s default hook timeout, anything longer means the hook is killed
+	// before the diagnostic below can be thrown. The server starts in ~300ms.
+	const deadline = Date.now() + 3_500;
+	let lastStatus = 0;
+
 	while (Date.now() < deadline) {
 		if (proc.exitCode !== null) {
-			throw new Error(`server exited early with code ${proc.exitCode}`);
+			throw new Error(`server exited early (code ${proc.exitCode})\n${stderr()}`);
 		}
 		try {
 			const res = await fetch(`${url}/health`);
 			if (res.ok) return;
+			lastStatus = res.status;
 		} catch {
 			// not listening yet
 		}
 		await Bun.sleep(100);
 	}
-	throw new Error(`server at ${url} never became healthy`);
+
+	// Distinguish "never came up" from "came up but refuses /health" — the latter
+	// is what a globally mounted auth middleware looks like, and saying so beats
+	// leaving a future reader with an unnamed beforeAll failure.
+	const detail =
+		lastStatus === 401 || lastStatus === 403
+			? `/health answered ${lastStatus}: auth is no longer scoped to /ingest`
+			: lastStatus > 0
+				? `/health answered ${lastStatus}`
+				: "nothing ever listened on the port";
+
+	throw new Error(`server at ${url} never became healthy — ${detail}\n${stderr()}`);
 }
 
 /** Remove a test database and its WAL sidecars. */
