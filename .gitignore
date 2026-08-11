@@ -9,7 +9,8 @@ dist/
 venv/
 .venv/
 node_modules/
-bun.lock
+# bun.lock IS committed: this is an application, and the Dockerfile installs with
+# --frozen-lockfile. Ignoring it made every clean build resolve versions afresh.
 drizzle/
 data/*.db
 data/*.db-wal
