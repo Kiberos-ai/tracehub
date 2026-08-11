@@ -3,7 +3,7 @@ import { and, desc, eq, gt, lt, sql } from "drizzle-orm";
 import { TRACEHUB_RETENTION_HOURS } from "../lib/config";
 import { TRACEHUB_DB } from "../lib/config";
 import type { TraceEntry } from "../lib/types";
-import { db, sqlite } from "./client";
+import { checkpointTruncate, db, sqlite } from "./client";
 import { traces } from "./schema";
 
 // =============================================================================
@@ -207,8 +207,10 @@ export function cleanupOldTraces(): number {
 	const result = sqlite.prepare("DELETE FROM traces WHERE created_at < ?").run(cutoff);
 	if (result.changes > 0) {
 		// DELETE only marks pages free — without this the file grows forever
-		// under a steady trace load. Incremental keeps the pause short.
+		// under a steady trace load. Incremental keeps the pause short, and the
+		// checkpoint is what actually hands the pages back to the filesystem.
 		sqlite.exec("PRAGMA incremental_vacuum");
+		checkpointTruncate();
 	}
 	return result.changes;
 }

@@ -25,7 +25,22 @@ const autoVacuumMode =
 if (autoVacuumMode !== 2 /* INCREMENTAL */) {
 	sqlite.exec("PRAGMA auto_vacuum = INCREMENTAL");
 	sqlite.exec("VACUUM");
+	checkpointTruncate();
 	console.error("[TracHub] DB converted to auto_vacuum=INCREMENTAL (one-time VACUUM)");
+}
+
+/**
+ * Truncate the WAL so freed pages actually leave the main database file.
+ * Under WAL a VACUUM rebuilds the database but the file itself only shrinks at
+ * checkpoint time — without this the file stays at its historical peak size.
+ * Best-effort: a busy checkpoint is retried by the next cleanup cycle.
+ */
+export function checkpointTruncate(): void {
+	try {
+		sqlite.exec("PRAGMA wal_checkpoint(TRUNCATE)");
+	} catch (e) {
+		console.error(`[TracHub] WAL checkpoint skipped: ${e instanceof Error ? e.message : e}`);
+	}
 }
 
 /** Drizzle ORM instance (sync API via bun:sqlite) */
