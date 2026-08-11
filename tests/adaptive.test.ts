@@ -63,20 +63,16 @@ describe("attention drives sampling", () => {
 		expect(await stateOf("manual")).toBeUndefined();
 	});
 
-	test(
-		"decays hot -> warm -> gone without anyone asking again",
-		async () => {
-			await postJson(`${server.url}/tracing/enable/decaying`, {});
-			expect(await stateOf("decaying")).toBe("hot");
+	test("decays hot -> warm -> gone without anyone asking again", async () => {
+		await postJson(`${server.url}/tracing/enable/decaying`, {});
+		expect(await stateOf("decaying")).toBe("hot");
 
-			await Bun.sleep(3500); // past HOT_TTL=2s
-			expect(await stateOf("decaying")).toBe("warm");
+		await Bun.sleep(3500); // past HOT_TTL=2s
+		expect(await stateOf("decaying")).toBe("warm");
 
-			await Bun.sleep(3500); // past WARM_TTL=2s
-			expect(await stateOf("decaying")).toBeUndefined();
-		},
-		20_000,
-	);
+		await Bun.sleep(3500); // past WARM_TTL=2s
+		expect(await stateOf("decaying")).toBeUndefined();
+	}, 20_000);
 });
 
 describe("config delivery", () => {
@@ -99,45 +95,37 @@ describe("config delivery", () => {
 		expect(Date.now() - started).toBeLessThan(1000);
 	});
 
-	test(
-		"long-poll waits, then returns 304 when nothing changed",
-		async () => {
-			const first = await fetch(`${server.url}/tracing/config`);
-			const etag = first.headers.get("etag") as string;
+	test("long-poll waits, then returns 304 when nothing changed", async () => {
+		const first = await fetch(`${server.url}/tracing/config`);
+		const etag = first.headers.get("etag") as string;
 
-			const started = Date.now();
-			const res = await fetch(`${server.url}/tracing/config`, {
-				headers: { "If-None-Match": etag, Prefer: "wait=2" },
-			});
-			const waited = Date.now() - started;
+		const started = Date.now();
+		const res = await fetch(`${server.url}/tracing/config`, {
+			headers: { "If-None-Match": etag, Prefer: "wait=2" },
+		});
+		const waited = Date.now() - started;
 
-			expect(res.status).toBe(304);
-			expect(waited).toBeGreaterThan(1500);
-		},
-		15_000,
-	);
+		expect(res.status).toBe(304);
+		expect(waited).toBeGreaterThan(1500);
+	}, 15_000);
 
-	test(
-		"long-poll wakes as soon as the config changes",
-		async () => {
-			const first = await fetch(`${server.url}/tracing/config`);
-			const etag = first.headers.get("etag") as string;
+	test("long-poll wakes as soon as the config changes", async () => {
+		const first = await fetch(`${server.url}/tracing/config`);
+		const etag = first.headers.get("etag") as string;
 
-			const started = Date.now();
-			const waiting = fetch(`${server.url}/tracing/config`, {
-				headers: { "If-None-Match": etag, Prefer: "wait=20" },
-			});
+		const started = Date.now();
+		const waiting = fetch(`${server.url}/tracing/config`, {
+			headers: { "If-None-Match": etag, Prefer: "wait=20" },
+		});
 
-			await Bun.sleep(300);
-			await postJson(`${server.url}/tracing/enable/wakes-the-poll`, {});
+		await Bun.sleep(300);
+		await postJson(`${server.url}/tracing/enable/wakes-the-poll`, {});
 
-			const res = await waiting;
-			const waited = Date.now() - started;
+		const res = await waiting;
+		const waited = Date.now() - started;
 
-			expect(res.status).toBe(200);
-			expect(waited).toBeLessThan(5000);
-			expect((await res.json()).hot_correlations["wakes-the-poll"]).toBeDefined();
-		},
-		30_000,
-	);
+		expect(res.status).toBe(200);
+		expect(waited).toBeLessThan(5000);
+		expect((await res.json()).hot_correlations["wakes-the-poll"]).toBeDefined();
+	}, 30_000);
 });
