@@ -95,10 +95,11 @@ export const rateLimitMiddleware = createMiddleware(async (c: Context, next: Nex
 
 	// --- Per-IP coarse limit (1000 req/min) ---
 	const ip = c.req.header("x-forwarded-for") ?? "unknown";
-	if (!ipWindows.has(ip)) {
-		ipWindows.set(ip, []);
+	let ipWindow = ipWindows.get(ip);
+	if (!ipWindow) {
+		ipWindow = [];
+		ipWindows.set(ip, ipWindow);
 	}
-	const ipWindow = ipWindows.get(ip)!;
 	// Trim entries older than 60s
 	const ipCutoff = now - 60_000;
 	while (ipWindow.length > 0 && ipWindow[0] < ipCutoff) {
@@ -123,10 +124,11 @@ export const rateLimitMiddleware = createMiddleware(async (c: Context, next: Nex
 
 	// "other" group (health, stats) — no per-group limit
 	if (limit !== undefined) {
-		if (!state.windows.has(group)) {
-			state.windows.set(group, []);
+		let window = state.windows.get(group);
+		if (!window) {
+			window = [];
+			state.windows.set(group, window);
 		}
-		const window = state.windows.get(group)!;
 		const cutoff = now - 60_000;
 		while (window.length > 0 && window[0] < cutoff) {
 			window.shift();

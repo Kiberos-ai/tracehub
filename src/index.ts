@@ -26,7 +26,7 @@ initDb();
 // Startup banner (NFR-11: stderr)
 // =============================================================================
 
-console.error(`[TracHub] v1.0.0 — https://muid.io`);
+console.error("[TracHub] v1.0.0 — https://muid.io");
 console.error(`[TracHub] Port: ${TRACEHUB_PORT}`);
 console.error(`[TracHub] DB: ${TRACEHUB_DB} (WAL mode)`);
 console.error(`[TracHub] Retention: ${TRACEHUB_RETENTION_HOURS} hours`);
@@ -91,9 +91,9 @@ docsProvider
 	.start()
 	.then(() => {
 		const { pages, chunks } = docsProvider.store.stats();
+		const target = DOCS_CENTRAL_URL ? ` → registered with ${DOCS_CENTRAL_URL}` : " (standalone)";
 		console.error(
-			`[TracHub] Docs provider ready at /help/api (${pages} pages, ${chunks} chunks)` +
-				(DOCS_CENTRAL_URL ? ` → registered with ${DOCS_CENTRAL_URL}` : " (standalone)"),
+			`[TracHub] Docs provider ready at /help/api (${pages} pages, ${chunks} chunks)${target}`,
 		);
 	})
 	.catch((e) =>

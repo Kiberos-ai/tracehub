@@ -23,6 +23,21 @@ export function getSourceIngestTotals(): Map<string, number> {
 	return sourceIngestTotals;
 }
 
+/**
+ * Record one ingest against its source, for /stats/sources.
+ * Shared by both ingest routes — /ingest/single used to skip this, so sources
+ * that only ever sent single traces never showed up in the per-source stats.
+ */
+function trackSourceIngest(sourceId: string, now: number): void {
+	let window = sourceIngestWindow.get(sourceId);
+	if (!window) {
+		window = [];
+		sourceIngestWindow.set(sourceId, window);
+	}
+	window.push(now);
+	sourceIngestTotals.set(sourceId, (sourceIngestTotals.get(sourceId) ?? 0) + 1);
+}
+
 // =============================================================================
 // SSE notification — wired to streaming service
 // =============================================================================
@@ -51,12 +66,7 @@ ingestRouter.post("/ingest", zValidator("json", TraceIngestRequestSchema), (c) =
 			if (onTraceInserted) onTraceInserted(trace);
 		}
 		// Track per-source rates
-		const sid = trace.source_id;
-		if (!sourceIngestWindow.has(sid)) {
-			sourceIngestWindow.set(sid, []);
-		}
-		sourceIngestWindow.get(sid)!.push(now);
-		sourceIngestTotals.set(sid, (sourceIngestTotals.get(sid) ?? 0) + 1);
+		trackSourceIngest(trace.source_id, now);
 	}
 
 	dbStats.ingestTotal += inserted;
@@ -76,11 +86,6 @@ ingestRouter.post("/ingest/single", zValidator("json", TraceEntrySchema), (c) =>
 	if (inserted && onTraceInserted) {
 		onTraceInserted(trace);
 	}
-	const sid = trace.source_id;
-	if (!sourceIngestWindow.has(sid)) {
-		sourceIngestWindow.set(sid, []);
-	}
-	sourceIngestWindow.get(sid)!.push(now);
-	sourceIngestTotals.set(sid, (sourceIngestTotals.get(sid) ?? 0) + 1);
+	trackSourceIngest(trace.source_id, now);
 	return c.json({ inserted });
 });

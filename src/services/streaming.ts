@@ -20,11 +20,13 @@ const _subscriberTimestamps = new Map<string, number>();
  * Returns a Subscriber handle for cleanup.
  */
 export function subscribe(corrId: string, writer: WritableStreamDefaultWriter): Subscriber {
-	if (!_subscribers.has(corrId)) {
-		_subscribers.set(corrId, new Set());
+	let subs = _subscribers.get(corrId);
+	if (!subs) {
+		subs = new Set();
+		_subscribers.set(corrId, subs);
 	}
 	const sub: Subscriber = { writer, addedAt: Date.now() };
-	_subscribers.get(corrId)!.add(sub);
+	subs.add(sub);
 	_subscriberTimestamps.set(corrId, Date.now());
 	return sub;
 }
