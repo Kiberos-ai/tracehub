@@ -1,10 +1,10 @@
 import { Hono } from "hono";
-import { stats as dbStats, cleanupOldTraces, getDbSizeMb } from "../db/operations";
+import { cleanupOldTraces, stats as dbStats, getDbSizeMb } from "../db/operations";
 import { TRACEHUB_DB, TRACEHUB_RETENTION_HOURS } from "../lib/config";
-import { getSourceIngestWindow, getSourceIngestTotals } from "./ingest";
-import { getRecentRateWindow, getRecentRequestsTotal } from "./query";
-import { getSubscriberStats } from "../services/streaming";
 import { getWaiterCount } from "../services/long-poll";
+import { getSubscriberStats } from "../services/streaming";
+import { getSourceIngestTotals, getSourceIngestWindow } from "./ingest";
+import { getRecentRateWindow, getRecentRequestsTotal } from "./query";
 
 // =============================================================================
 // Server start time
@@ -33,9 +33,7 @@ adminRouter.get("/stats", (c) => {
 	const rssMb = Math.round((process.memoryUsage().rss / 1024 / 1024) * 10) / 10;
 
 	// Top sources by total ingest, show top 5
-	const sortedSources = [...sourceIngestTotals.entries()]
-		.sort((a, b) => b[1] - a[1])
-		.slice(0, 5);
+	const sortedSources = [...sourceIngestTotals.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
 
 	const topSources = sortedSources.map(([sid]) => ({
 		source_id: sid,
@@ -71,24 +69,19 @@ adminRouter.get("/stats/sources", (c) => {
 	const sourceIngestTotals = getSourceIngestTotals();
 
 	// Merge all known source IDs
-	const allSids = new Set([
-		...sourceIngestTotals.keys(),
-		...sourceIngestWindow.keys(),
-	]);
+	const allSids = new Set([...sourceIngestTotals.keys(), ...sourceIngestWindow.keys()]);
 
-	const sources = [...allSids]
-		.sort()
-		.map((sid) => {
-			const window = sourceIngestWindow.get(sid) ?? [];
-			const rpm = window.filter((t) => now - t < 60).length;
-			const rp5m = window.length;
-			return {
-				source_id: sid,
-				total: sourceIngestTotals.get(sid) ?? 0,
-				rpm,
-				rp5m,
-			};
-		});
+	const sources = [...allSids].sort().map((sid) => {
+		const window = sourceIngestWindow.get(sid) ?? [];
+		const rpm = window.filter((t) => now - t < 60).length;
+		const rp5m = window.length;
+		return {
+			source_id: sid,
+			total: sourceIngestTotals.get(sid) ?? 0,
+			rpm,
+			rp5m,
+		};
+	});
 
 	// Sort by rpm descending
 	sources.sort((a, b) => b.rpm - a.rpm);

@@ -7,9 +7,7 @@ import { createMiddleware } from "hono/factory";
  */
 export const clientIdMiddleware = createMiddleware(async (c, next) => {
 	const clientId =
-		c.req.header("X-TraceHub-Client") ??
-		c.req.header("x-forwarded-for") ??
-		"unknown";
+		c.req.header("X-TraceHub-Client") ?? c.req.header("x-forwarded-for") ?? "unknown";
 
 	c.set("clientId", clientId);
 	await next();

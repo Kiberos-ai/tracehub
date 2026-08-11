@@ -1,14 +1,14 @@
 import { Hono } from "hono";
+import { ADAPTIVE_HOT_TTL } from "../lib/config";
 import {
-	markHot,
-	getState,
-	removeCorrId,
 	getConfigEtag,
 	getConfigPayload,
+	getState,
 	getStatusPayload,
+	markHot,
+	removeCorrId,
 } from "../services/adaptive";
 import { addWaiter } from "../services/long-poll";
-import { ADAPTIVE_HOT_TTL } from "../lib/config";
 
 export const tracingRouter = new Hono();
 

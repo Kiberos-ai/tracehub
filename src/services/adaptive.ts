@@ -1,8 +1,8 @@
 import {
-	ADAPTIVE_HOT_TTL,
-	ADAPTIVE_WARM_TTL,
-	ADAPTIVE_WARM_RATE,
 	ADAPTIVE_COLD_RATE,
+	ADAPTIVE_HOT_TTL,
+	ADAPTIVE_WARM_RATE,
+	ADAPTIVE_WARM_TTL,
 } from "../lib/config";
 import { notifyWaiters } from "./long-poll";
 

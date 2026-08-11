@@ -2,8 +2,8 @@
 // BatchSender — queues traces and sends in batches to /ingest (CR-07)
 // =============================================================================
 
-import type { TraceEntry } from "./types";
 import type { LoggerFn } from "./logger";
+import type { TraceEntry } from "./types";
 
 const MAX_QUEUE_SIZE = 10_000; // AC-30: drop oldest if exceeded
 

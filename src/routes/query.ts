@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { queryTraces, listRecentCorrelations } from "../db/operations";
 import { sqlite } from "../db/client";
-import { markHot, getState } from "../services/adaptive";
-import { subscribe, unsubscribe } from "../services/streaming";
+import { listRecentCorrelations, queryTraces } from "../db/operations";
 import { ADAPTIVE_HOT_TTL } from "../lib/config";
+import { getState, markHot } from "../services/adaptive";
+import { subscribe, unsubscribe } from "../services/streaming";
 
 // =============================================================================
 // In-memory state for /recent rate limiting
@@ -92,10 +92,7 @@ queryRouter.get("/recent", (c) => {
 	// Count requests in last 60 seconds
 	const recentCount = recentRateWindow.filter((t) => now - t < 60).length;
 	if (recentCount > 30) {
-		return c.json(
-			{ detail: "Rate limit exceeded: max 30 requests/minute" },
-			429,
-		);
+		return c.json({ detail: "Rate limit exceeded: max 30 requests/minute" }, 429);
 	}
 
 	// Parse query params
@@ -157,10 +154,7 @@ queryRouter.get("/recent", (c) => {
 
 queryRouter.get("/traces/:correlationId/stream", (c) => {
 	const correlationId = c.req.param("correlationId");
-	const timeoutSec = Math.min(
-		Number(c.req.query("timeout") ?? "60"),
-		300,
-	);
+	const timeoutSec = Math.min(Number(c.req.query("timeout") ?? "60"), 300);
 	const timeoutMs = timeoutSec * 1000;
 	const encoder = new TextEncoder();
 
@@ -206,9 +200,7 @@ queryRouter.get("/traces/:correlationId/stream", (c) => {
 	(async () => {
 		try {
 			for (const trace of existingTraces) {
-				await writer.write(
-					encoder.encode(`data: ${JSON.stringify(trace)}\n\n`),
-				);
+				await writer.write(encoder.encode(`data: ${JSON.stringify(trace)}\n\n`));
 			}
 		} catch {
 			cleanup();
@@ -223,11 +215,7 @@ queryRouter.get("/traces/:correlationId/stream", (c) => {
 	// Timeout: send final event and close
 	const timeout = setTimeout(() => {
 		writer
-			.write(
-				encoder.encode(
-					`data: ${JSON.stringify({ type: "timeout" })}\n\n`,
-				),
-			)
+			.write(encoder.encode(`data: ${JSON.stringify({ type: "timeout" })}\n\n`))
 			.catch(() => {})
 			.finally(() => cleanup());
 	}, timeoutMs);

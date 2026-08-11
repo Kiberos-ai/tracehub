@@ -19,10 +19,7 @@ const _subscriberTimestamps = new Map<string, number>();
  * Subscribe to real-time trace updates for a correlation ID.
  * Returns a Subscriber handle for cleanup.
  */
-export function subscribe(
-	corrId: string,
-	writer: WritableStreamDefaultWriter,
-): Subscriber {
+export function subscribe(corrId: string, writer: WritableStreamDefaultWriter): Subscriber {
 	if (!_subscribers.has(corrId)) {
 		_subscribers.set(corrId, new Set());
 	}

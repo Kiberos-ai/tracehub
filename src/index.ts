@@ -1,20 +1,20 @@
 import { app } from "./app";
+import { cleanupOldTraces, initDb } from "./db/operations";
+import { docsProvider } from "./docs-provider";
 import {
-	TRACEHUB_PORT,
-	TRACEHUB_DB,
-	TRACEHUB_SECRET,
-	TRACEHUB_RETENTION_HOURS,
 	ADAPTIVE_TICK_INTERVAL,
 	MAX_LONGPOLL_CONNECTIONS,
+	TRACEHUB_DB,
+	TRACEHUB_PORT,
+	TRACEHUB_RETENTION_HOURS,
+	TRACEHUB_SECRET,
 } from "./lib/config";
-import { initDb, cleanupOldTraces } from "./db/operations";
-import { cooldownTick } from "./services/adaptive";
-import { cleanupStaleSubscribers } from "./services/streaming";
+import { DOCS_CENTRAL_URL } from "./lib/config";
 import { cleanupRateLimitState } from "./middleware/rate-limit";
 import { getSourceIngestWindow } from "./routes/ingest";
 import { getRecentRateWindow } from "./routes/query";
-import { docsProvider } from "./docs-provider";
-import { DOCS_CENTRAL_URL } from "./lib/config";
+import { cooldownTick } from "./services/adaptive";
+import { cleanupStaleSubscribers } from "./services/streaming";
 
 // =============================================================================
 // Database initialization
@@ -30,9 +30,7 @@ console.error(`[TracHub] v1.0.0 — https://muid.io`);
 console.error(`[TracHub] Port: ${TRACEHUB_PORT}`);
 console.error(`[TracHub] DB: ${TRACEHUB_DB} (WAL mode)`);
 console.error(`[TracHub] Retention: ${TRACEHUB_RETENTION_HOURS} hours`);
-console.error(
-	`[TracHub] Secret: ${TRACEHUB_SECRET ? "configured" : "not configured"}`,
-);
+console.error(`[TracHub] Secret: ${TRACEHUB_SECRET ? "configured" : "not configured"}`);
 console.error(`[TracHub] Max long-poll: ${MAX_LONGPOLL_CONNECTIONS}`);
 
 // =============================================================================

@@ -1,25 +1,25 @@
 {
-  "name": "tracehub",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "bun run --watch src/index.ts",
-    "start": "bun run src/index.ts",
-    "lint": "biome check .",
-    "format": "biome format --write .",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
-  },
-  "dependencies": {
-    "@context777/provider": "^0.1.0",
-    "drizzle-orm": "^0.44.0",
-    "hono": "^4.7.0",
-    "@hono/zod-validator": "^0.5.0",
-    "zod": "^3.24.0"
-  },
-  "devDependencies": {
-    "drizzle-kit": "^0.31.0",
-    "@biomejs/biome": "^1.9.0",
-    "@types/bun": "^1.2.0"
-  }
+	"name": "tracehub",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "bun run --watch src/index.ts",
+		"start": "bun run src/index.ts",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate"
+	},
+	"dependencies": {
+		"@context777/provider": "^0.1.0",
+		"drizzle-orm": "^0.44.0",
+		"hono": "^4.7.0",
+		"@hono/zod-validator": "^0.5.0",
+		"zod": "^3.24.0"
+	},
+	"devDependencies": {
+		"drizzle-kit": "^0.31.0",
+		"@biomejs/biome": "^1.9.0",
+		"@types/bun": "^1.2.0"
+	}
 }

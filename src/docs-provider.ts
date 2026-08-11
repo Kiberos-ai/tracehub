@@ -1,11 +1,11 @@
-import { createDocsProvider, type RawPage } from "@context777/provider";
-import { DOC_PAGES } from "./routes/docs";
+import { type RawPage, createDocsProvider } from "@context777/provider";
 import {
 	DOCS_CENTRAL_URL,
-	DOCS_SOURCE_SECRET,
 	DOCS_PROVIDER_URL,
 	DOCS_PUBLIC_BASE,
+	DOCS_SOURCE_SECRET,
 } from "./lib/config";
+import { DOC_PAGES } from "./routes/docs";
 
 // =============================================================================
 // TracHub docs provider — exposes TracHub's own documentation through the

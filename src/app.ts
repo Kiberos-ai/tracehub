@@ -1,14 +1,14 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { docsProvider } from "./docs-provider";
 import { clientIdMiddleware } from "./middleware/client-id";
 import { rateLimitMiddleware } from "./middleware/rate-limit";
+import { adminRouter } from "./routes/admin";
+import { docsRouter } from "./routes/docs";
 import { healthRouter } from "./routes/health";
 import { ingestRouter } from "./routes/ingest";
 import { queryRouter } from "./routes/query";
 import { tracingRouter } from "./routes/tracing";
-import { adminRouter } from "./routes/admin";
-import { docsRouter } from "./routes/docs";
-import { docsProvider } from "./docs-provider";
 
 // =============================================================================
 // Hono app assembly

@@ -5,10 +5,10 @@
 export type { TraceHubConfig, TraceEntry, AdaptiveConfig } from "./types";
 export type { LoggerFn, LogEvent } from "./logger";
 
-import type { TraceHubConfig, TraceEntry } from "./types";
-import { createLogger } from "./logger";
-import { ConfigPoller } from "./config-poll";
 import { BatchSender } from "./client";
+import { ConfigPoller } from "./config-poll";
+import { createLogger } from "./logger";
+import type { TraceEntry, TraceHubConfig } from "./types";
 
 // ---------------------------------------------------------------------------
 // Module state
@@ -28,8 +28,12 @@ try {
 		// Instead read from env or leave "unknown".
 		hostname =
 			(globalThis as Record<string, unknown>).process &&
-			typeof ((globalThis as Record<string, unknown>).process as Record<string, unknown>).env === "object"
-				? (((globalThis as Record<string, unknown>).process as Record<string, unknown>).env as Record<string, string>).HOSTNAME ?? "unknown"
+			typeof ((globalThis as Record<string, unknown>).process as Record<string, unknown>).env ===
+				"object"
+				? ((
+						((globalThis as Record<string, unknown>).process as Record<string, unknown>)
+							.env as Record<string, string>
+					).HOSTNAME ?? "unknown")
 				: "unknown";
 	}
 } catch {
@@ -80,14 +84,7 @@ export function init(config: TraceHubConfig): void {
 		}
 
 		// Create batch sender
-		sender = new BatchSender(
-			url,
-			config.secret,
-			clientId,
-			batchSize,
-			flushInterval,
-			logger,
-		);
+		sender = new BatchSender(url, config.secret, clientId, batchSize, flushInterval, logger);
 	} catch (err) {
 		// CN-03: must not throw to user code
 		const logger = createLogger(config.logger);

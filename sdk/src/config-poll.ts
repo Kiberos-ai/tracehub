@@ -2,8 +2,8 @@
 // ConfigPoller — long-poll /tracing/config for adaptive tracing updates
 // =============================================================================
 
-import type { AdaptiveConfig } from "./types";
 import type { LoggerFn } from "./logger";
+import type { AdaptiveConfig } from "./types";
 
 export class ConfigPoller {
 	private url: string;
@@ -25,12 +25,7 @@ export class ConfigPoller {
 	private readonly maxBackoffMs = 5 * 60 * 1000; // 5 min cap
 	private pollTimer: ReturnType<typeof setTimeout> | null = null;
 
-	constructor(
-		url: string,
-		clientId: string,
-		secret: string | undefined,
-		logger: LoggerFn,
-	) {
+	constructor(url: string, clientId: string, secret: string | undefined, logger: LoggerFn) {
 		this.url = url;
 		this.clientId = clientId;
 		this.secret = secret;
@@ -85,7 +80,7 @@ export class ConfigPoller {
 		if (!this.running) return;
 
 		const headers: Record<string, string> = {
-			"Prefer": "wait=30",
+			Prefer: "wait=30",
 			"X-TraceHub-Client": this.clientId,
 		};
 
@@ -107,7 +102,10 @@ export class ConfigPoller {
 				const body = (await res.json()) as AdaptiveConfig;
 				this.config = body;
 				this.backoffMs = 1000; // reset backoff on success
-				this.logger("config_updated", `etag=${body.etag} hot=${Object.keys(body.hot_correlations).length}`);
+				this.logger(
+					"config_updated",
+					`etag=${body.etag} hot=${Object.keys(body.hot_correlations).length}`,
+				);
 				// Immediately poll again for next change
 				this._schedulePoll(0);
 				return;
@@ -124,12 +122,9 @@ export class ConfigPoller {
 				// Rate limited or banned — honour Retry-After (CN-04, CR-08)
 				const retryAfter = Number(res.headers.get("Retry-After") ?? "60");
 				const pauseMs = retryAfter * 1000;
-				const body = await res.json().catch(() => ({})) as Record<string, unknown>;
+				const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
 				const isBan = typeof body.error === "string" && body.error.includes("ban");
-				this.logger(
-					isBan ? "banned" : "rate_limited",
-					`retry_after=${retryAfter}s`,
-				);
+				this.logger(isBan ? "banned" : "rate_limited", `retry_after=${retryAfter}s`);
 				this._schedulePoll(pauseMs);
 				return;
 			}

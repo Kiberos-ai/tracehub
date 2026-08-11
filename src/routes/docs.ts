@@ -598,7 +598,10 @@ docsRouter.get("/docs/:page", (c) => {
 	const page = c.req.param("page");
 	const content = DOC_PAGES[page];
 	if (!content) {
-		return c.text(`# 404 Not Found\n\nPage \`${page}\` not found. See /llms.txt for available pages.`, 404);
+		return c.text(
+			`# 404 Not Found\n\nPage \`${page}\` not found. See /llms.txt for available pages.`,
+			404,
+		);
 	}
 	return c.text(content);
 });

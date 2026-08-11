@@ -1,10 +1,10 @@
+import { statSync } from "node:fs";
 import { and, desc, eq, gt, lt, sql } from "drizzle-orm";
+import { TRACEHUB_RETENTION_HOURS } from "../lib/config";
+import { TRACEHUB_DB } from "../lib/config";
+import type { TraceEntry } from "../lib/types";
 import { db, sqlite } from "./client";
 import { traces } from "./schema";
-import { TRACEHUB_RETENTION_HOURS } from "../lib/config";
-import type { TraceEntry } from "../lib/types";
-import { statSync } from "node:fs";
-import { TRACEHUB_DB } from "../lib/config";
 
 // =============================================================================
 // Stats tracking
@@ -50,15 +50,9 @@ export function initDb(): void {
 			UNIQUE(correlation_id, timestamp, suffix)
 		)
 	`);
-	sqlite.exec(
-		"CREATE INDEX IF NOT EXISTS idx_correlation_id ON traces(correlation_id)",
-	);
-	sqlite.exec(
-		"CREATE INDEX IF NOT EXISTS idx_timestamp ON traces(timestamp)",
-	);
-	sqlite.exec(
-		"CREATE INDEX IF NOT EXISTS idx_source_id ON traces(source_id)",
-	);
+	sqlite.exec("CREATE INDEX IF NOT EXISTS idx_correlation_id ON traces(correlation_id)");
+	sqlite.exec("CREATE INDEX IF NOT EXISTS idx_timestamp ON traces(timestamp)");
+	sqlite.exec("CREATE INDEX IF NOT EXISTS idx_source_id ON traces(source_id)");
 	sqlite.exec(
 		"CREATE INDEX IF NOT EXISTS idx_dedup ON traces(source_id, correlation_id, endpoint, direction)",
 	);
@@ -143,11 +137,6 @@ export function queryTraces(
 	sourceId?: string,
 	sinceTs?: number,
 ): Array<typeof traces.$inferSelect> {
-	let query = db
-		.select()
-		.from(traces)
-		.where(eq(traces.correlationId, correlationId));
-
 	const conditions = [eq(traces.correlationId, correlationId)];
 
 	if (sourceId) {
@@ -204,10 +193,7 @@ export function listRecentCorrelations(limit = 50): Array<{
 		trace_count: row.trace_count,
 		first_ts: row.first_ts,
 		last_ts: row.last_ts,
-		duration_ms:
-			row.last_ts && row.first_ts
-				? Math.round(row.last_ts - row.first_ts)
-				: 0,
+		duration_ms: row.last_ts && row.first_ts ? Math.round(row.last_ts - row.first_ts) : 0,
 		sources: row.sources ? row.sources.split(",") : [],
 	}));
 }
@@ -218,9 +204,12 @@ export function listRecentCorrelations(limit = 50): Array<{
  */
 export function cleanupOldTraces(): number {
 	const cutoff = Date.now() / 1000 - TRACEHUB_RETENTION_HOURS * 3600;
-	const result = sqlite
-		.prepare("DELETE FROM traces WHERE created_at < ?")
-		.run(cutoff);
+	const result = sqlite.prepare("DELETE FROM traces WHERE created_at < ?").run(cutoff);
+	if (result.changes > 0) {
+		// DELETE only marks pages free — without this the file grows forever
+		// under a steady trace load. Incremental keeps the pause short.
+		sqlite.exec("PRAGMA incremental_vacuum");
+	}
 	return result.changes;
 }
 

@@ -1,8 +1,8 @@
-import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { TraceIngestRequestSchema, TraceEntrySchema } from "../lib/types";
+import { Hono } from "hono";
+import { stats as dbStats, insertTrace } from "../db/operations";
+import { TraceEntrySchema, TraceIngestRequestSchema } from "../lib/types";
 import type { TraceEntry } from "../lib/types";
-import { insertTrace, stats as dbStats } from "../db/operations";
 import { authMiddleware } from "../middleware/auth";
 import { notifySubscribers } from "../services/streaming";
 
@@ -40,55 +40,47 @@ export const ingestRouter = new Hono();
 ingestRouter.use("/ingest/*", authMiddleware);
 ingestRouter.use("/ingest", authMiddleware);
 
-ingestRouter.post(
-	"/ingest",
-	zValidator("json", TraceIngestRequestSchema),
-	(c) => {
-		const body = c.req.valid("json");
-		let inserted = 0;
-		const now = Date.now() / 1000;
+ingestRouter.post("/ingest", zValidator("json", TraceIngestRequestSchema), (c) => {
+	const body = c.req.valid("json");
+	let inserted = 0;
+	const now = Date.now() / 1000;
 
-		for (const trace of body.traces) {
-			if (insertTrace(trace)) {
-				inserted++;
-				if (onTraceInserted) onTraceInserted(trace);
-			}
-			// Track per-source rates
-			const sid = trace.source_id;
-			if (!sourceIngestWindow.has(sid)) {
-				sourceIngestWindow.set(sid, []);
-			}
-			sourceIngestWindow.get(sid)!.push(now);
-			sourceIngestTotals.set(sid, (sourceIngestTotals.get(sid) ?? 0) + 1);
+	for (const trace of body.traces) {
+		if (insertTrace(trace)) {
+			inserted++;
+			if (onTraceInserted) onTraceInserted(trace);
 		}
-
-		dbStats.ingestTotal += inserted;
-		dbStats.ingestDuplicates += body.traces.length - inserted;
-
-		return c.json({
-			accepted: body.traces.length,
-			inserted,
-			duplicates: body.traces.length - inserted,
-		});
-	},
-);
-
-ingestRouter.post(
-	"/ingest/single",
-	zValidator("json", TraceEntrySchema),
-	(c) => {
-		const trace = c.req.valid("json");
-		const now = Date.now() / 1000;
-		const inserted = insertTrace(trace);
-		if (inserted && onTraceInserted) {
-			onTraceInserted(trace);
-		}
+		// Track per-source rates
 		const sid = trace.source_id;
 		if (!sourceIngestWindow.has(sid)) {
 			sourceIngestWindow.set(sid, []);
 		}
 		sourceIngestWindow.get(sid)!.push(now);
 		sourceIngestTotals.set(sid, (sourceIngestTotals.get(sid) ?? 0) + 1);
-		return c.json({ inserted });
-	},
-);
+	}
+
+	dbStats.ingestTotal += inserted;
+	dbStats.ingestDuplicates += body.traces.length - inserted;
+
+	return c.json({
+		accepted: body.traces.length,
+		inserted,
+		duplicates: body.traces.length - inserted,
+	});
+});
+
+ingestRouter.post("/ingest/single", zValidator("json", TraceEntrySchema), (c) => {
+	const trace = c.req.valid("json");
+	const now = Date.now() / 1000;
+	const inserted = insertTrace(trace);
+	if (inserted && onTraceInserted) {
+		onTraceInserted(trace);
+	}
+	const sid = trace.source_id;
+	if (!sourceIngestWindow.has(sid)) {
+		sourceIngestWindow.set(sid, []);
+	}
+	sourceIngestWindow.get(sid)!.push(now);
+	sourceIngestTotals.set(sid, (sourceIngestTotals.get(sid) ?? 0) + 1);
+	return c.json({ inserted });
+});
