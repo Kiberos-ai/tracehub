@@ -130,6 +130,24 @@ export function insertTrace(entry: TraceEntry): boolean {
 }
 
 /**
+ * Insert a batch and return the entries that produced a new row.
+ *
+ * The transaction is the whole point: outside one, SQLite commits — and fsyncs —
+ * per statement, which measured at ~18ms per trace, so a 500-trace batch took
+ * about 9 seconds. Wrapping the loop makes it one commit for the batch.
+ *
+ * Callers should notify subscribers from the returned list, after the commit,
+ * so nothing is announced that a rollback would have taken back.
+ */
+export const insertTraces = sqlite.transaction((entries: TraceEntry[]): TraceEntry[] => {
+	const insertedEntries: TraceEntry[] = [];
+	for (const entry of entries) {
+		if (insertTrace(entry)) insertedEntries.push(entry);
+	}
+	return insertedEntries;
+}) as unknown as (entries: TraceEntry[]) => TraceEntry[];
+
+/**
  * Query traces by correlation ID, optionally filtered by source and timestamp.
  */
 export function queryTraces(

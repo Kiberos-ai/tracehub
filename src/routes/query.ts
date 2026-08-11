@@ -196,9 +196,16 @@ queryRouter.get("/traces/:correlationId/stream", (c) => {
 		}
 	};
 
-	// Send existing traces immediately
+	// Flush a comment first, then any existing traces.
+	//
+	// The comment matters even though SSE clients ignore it: nothing else is
+	// written when the correlation has no traces yet — the common case of
+	// watching a request that has not started — and until the first byte leaves,
+	// the client does not even receive the response headers. It would otherwise
+	// sit unanswered until the 15s heartbeat.
 	(async () => {
 		try {
+			await writer.write(encoder.encode(": connected\n\n"));
 			for (const trace of existingTraces) {
 				await writer.write(encoder.encode(`data: ${JSON.stringify(trace)}\n\n`));
 			}

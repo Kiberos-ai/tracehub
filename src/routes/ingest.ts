@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { insertTrace } from "../db/operations";
+import { insertTrace, insertTraces } from "../db/operations";
 import { TraceEntrySchema, TraceIngestRequestSchema } from "../lib/types";
 import type { TraceEntry } from "../lib/types";
 import { authMiddleware } from "../middleware/auth";
@@ -57,15 +57,16 @@ ingestRouter.use("/ingest", authMiddleware);
 
 ingestRouter.post("/ingest", zValidator("json", TraceIngestRequestSchema), (c) => {
 	const body = c.req.valid("json");
-	let inserted = 0;
 	const now = Date.now() / 1000;
 
+	// One transaction for the whole batch — per-statement commits cost a fsync each.
+	const insertedEntries = insertTraces(body.traces);
+
+	// Announce only after the commit, and count sources for every trace received.
+	for (const trace of insertedEntries) {
+		if (onTraceInserted) onTraceInserted(trace);
+	}
 	for (const trace of body.traces) {
-		if (insertTrace(trace)) {
-			inserted++;
-			if (onTraceInserted) onTraceInserted(trace);
-		}
-		// Track per-source rates
 		trackSourceIngest(trace.source_id, now);
 	}
 
@@ -73,6 +74,7 @@ ingestRouter.post("/ingest", zValidator("json", TraceIngestRequestSchema), (c) =
 	// duplicate from a 5-minute-window dedup. Adding to them here double-counted
 	// every batched trace and filed both kinds under "duplicates".
 
+	const inserted = insertedEntries.length;
 	return c.json({
 		accepted: body.traces.length,
 		inserted,
