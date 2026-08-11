@@ -16,6 +16,11 @@ services:
       - TRACEHUB_RATE_QUERY=${TRACEHUB_RATE_QUERY:-60}
       - TRACEHUB_BAN_WARNING=${TRACEHUB_BAN_WARNING:-60}
       - TRACEHUB_BAN_HARD=${TRACEHUB_BAN_HARD:-300}
+      # Docs provider — registers TracHub's own docs with the context777 index.
+      # Without CENTRAL_URL the provider still serves /help/api but never registers.
+      - TRACEHUB_DOCS_CENTRAL_URL=${TRACEHUB_DOCS_CENTRAL_URL:-https://context777.com}
+      - TRACEHUB_DOCS_SOURCE_SECRET=${TRACEHUB_DOCS_SOURCE_SECRET}
+      - TRACEHUB_DOCS_PROVIDER_URL=${TRACEHUB_DOCS_PROVIDER_URL:-https://tracehub.muid.io/help/api}
     volumes:
       - tracehub_data:/data
       # Hot-swap code mount (no rebuild needed, just restart)

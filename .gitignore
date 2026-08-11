@@ -14,3 +14,7 @@ drizzle/
 data/*.db
 data/*.db-wal
 data/*.db-shm
+.env.synqtask
+.claude/
+# Reference clones + architect scans (rule #9: gitignored, project-local)
+external/
