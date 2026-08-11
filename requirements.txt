@@ -1,6 +1,4 @@
-# TraceHub dependencies
-fastapi>=0.109.0
-uvicorn>=0.27.0
-aiosqlite>=0.19.0
+# TraceHub Python client dependencies.
+# The server itself is TypeScript (Bun + Hono) — see package.json.
 httpx>=0.26.0
 pydantic>=2.5.0

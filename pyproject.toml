@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "tracehub"
 version = "0.1.0"
-description = "Centralized checkpoint trace collection and query service for distributed systems"
+description = "Python client for TraceHub — send checkpoint traces to a TraceHub server"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
@@ -20,7 +20,6 @@ keywords = [
     "observability",
     "correlation-id",
     "microservices",
-    "fastapi",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -30,7 +29,6 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Framework :: FastAPI",
     "Topic :: Software Development :: Debuggers",
     "Topic :: System :: Logging",
 ]
@@ -39,24 +37,12 @@ dependencies = [
     "pydantic>=2.0.0",
 ]
 
-[project.optional-dependencies]
-server = [
-    "fastapi>=0.109.0",
-    "uvicorn>=0.27.0",
-    "aiosqlite>=0.19.0",
-]
-all = [
-    "fastapi>=0.109.0",
-    "uvicorn>=0.27.0",
-    "aiosqlite>=0.19.0",
-]
+# No server extra: the TraceHub server is TypeScript (Bun + Hono) since 812da1e.
+# This package is the Python client only.
 
 [project.urls]
 Homepage = "https://muid.io"
-Repository = "https://github.com/lifeaitools/tracehub"
-
-[project.scripts]
-tracehub-server = "tracehub.server:main"
+Repository = "https://github.com/Kiberos-ai/tracehub"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/tracehub"]
