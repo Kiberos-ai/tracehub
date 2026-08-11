@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { stats as dbStats, insertTrace } from "../db/operations";
+import { insertTrace } from "../db/operations";
 import { TraceEntrySchema, TraceIngestRequestSchema } from "../lib/types";
 import type { TraceEntry } from "../lib/types";
 import { authMiddleware } from "../middleware/auth";
@@ -69,8 +69,9 @@ ingestRouter.post("/ingest", zValidator("json", TraceIngestRequestSchema), (c) =
 		trackSourceIngest(trace.source_id, now);
 	}
 
-	dbStats.ingestTotal += inserted;
-	dbStats.ingestDuplicates += body.traces.length - inserted;
+	// Counters are owned by insertTrace(), which alone can tell a UNIQUE-constraint
+	// duplicate from a 5-minute-window dedup. Adding to them here double-counted
+	// every batched trace and filed both kinds under "duplicates".
 
 	return c.json({
 		accepted: body.traces.length,
