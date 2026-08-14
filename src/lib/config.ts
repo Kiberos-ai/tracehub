@@ -34,6 +34,27 @@ export const ADAPTIVE_TICK_INTERVAL = Number(process.env.ADAPTIVE_TICK_INTERVAL 
 /** Maximum concurrent long-poll connections */
 export const MAX_LONGPOLL_CONNECTIONS = Number(process.env.MAX_LONGPOLL_CONNECTIONS ?? "200");
 
+/** Longest a long poll may hold a connection, seconds. `Prefer: wait=N` is capped here. */
+export const MAX_LONGPOLL_WAIT = Number(process.env.MAX_LONGPOLL_WAIT ?? "60");
+
+/** How often an SSE stream writes a comment so the connection is never idle, seconds. */
+export const SSE_HEARTBEAT_INTERVAL = Number(process.env.SSE_HEARTBEAT_INTERVAL ?? "15");
+
+/**
+ * Idle timeout handed to Bun.serve, seconds.
+ *
+ * Both push mechanisms here deliberately hold a socket with nothing on it — a
+ * long poll for up to MAX_LONGPOLL_WAIT, an SSE stream between heartbeats — so
+ * the runtime's own default (12s on bun 1.3.14) closes them mid-wait, and the
+ * client sees a dropped socket rather than an answer. Derived from the two
+ * silences rather than fixed, so raising either cannot leave this behind.
+ * Bun's own ceiling is 255.
+ */
+export const SERVER_IDLE_TIMEOUT = Math.min(
+	255,
+	Math.max(MAX_LONGPOLL_WAIT, SSE_HEARTBEAT_INTERVAL) + 15,
+);
+
 // Rate limiting
 /** Ingest requests per minute per client */
 export const TRACEHUB_RATE_INGEST = Number(process.env.TRACEHUB_RATE_INGEST ?? "120");

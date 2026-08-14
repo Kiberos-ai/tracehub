@@ -4,6 +4,7 @@ import { docsProvider } from "./docs-provider";
 import {
 	ADAPTIVE_TICK_INTERVAL,
 	MAX_LONGPOLL_CONNECTIONS,
+	SERVER_IDLE_TIMEOUT,
 	TRACEHUB_DB,
 	TRACEHUB_PORT,
 	TRACEHUB_RETENTION_HOURS,
@@ -81,6 +82,9 @@ const cleanupInterval = setInterval(() => {
 const server = Bun.serve({
 	fetch: app.fetch,
 	port: TRACEHUB_PORT,
+	// Without this the runtime closes a long poll or a quiet SSE stream long
+	// before it is due — see SERVER_IDLE_TIMEOUT for why it is derived, not fixed.
+	idleTimeout: SERVER_IDLE_TIMEOUT,
 });
 
 console.error(`[TracHub] Listening on 0.0.0.0:${server.port}`);

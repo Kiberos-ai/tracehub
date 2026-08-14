@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ADAPTIVE_HOT_TTL } from "../lib/config";
+import { ADAPTIVE_HOT_TTL, MAX_LONGPOLL_WAIT } from "../lib/config";
 import {
 	getConfigEtag,
 	getConfigPayload,
@@ -22,7 +22,8 @@ tracingRouter.get("/tracing/config", async (c) => {
 	if (preferHeader) {
 		const match = preferHeader.match(/wait=(\d+)/);
 		if (match) {
-			waitMs = Math.min(Number(match[1]) * 1000, 60_000); // cap 60s
+			// Capped at the value the server's idle timeout was sized for.
+			waitMs = Math.min(Number(match[1]) * 1000, MAX_LONGPOLL_WAIT * 1000);
 		}
 	}
 

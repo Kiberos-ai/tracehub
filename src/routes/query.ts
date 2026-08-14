@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { sqlite } from "../db/client";
 import { listRecentCorrelations, queryTraces } from "../db/operations";
-import { ADAPTIVE_HOT_TTL } from "../lib/config";
+import { ADAPTIVE_HOT_TTL, SSE_HEARTBEAT_INTERVAL } from "../lib/config";
 import { getState, markHot } from "../services/adaptive";
 import { subscribe, unsubscribe } from "../services/streaming";
 
@@ -214,10 +214,11 @@ queryRouter.get("/traces/:correlationId/stream", (c) => {
 		}
 	})();
 
-	// Heartbeat every 15s
+	// Heartbeat — also what keeps the connection from ever looking idle to the
+	// runtime, so its interval and the server idle timeout are set together.
 	const heartbeat = setInterval(() => {
 		writer.write(encoder.encode(": ping\n\n")).catch(() => cleanup());
-	}, 15_000);
+	}, SSE_HEARTBEAT_INTERVAL * 1000);
 
 	// Timeout: send final event and close
 	const timeout = setTimeout(() => {
