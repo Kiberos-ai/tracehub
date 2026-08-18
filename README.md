@@ -72,7 +72,7 @@ docker compose up -d
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/traces/{corr_id}` | GET | All traces for a correlation id — also marks it HOT |
+| `/traces/{corr_id}` | GET | All traces for a correlation id — also marks it HOT. `?source=` filters by source, `?since_ts=` returns only traces newer than that timestamp (completeness is still judged on the whole chain) |
 | `/traces/{corr_id}/stream` | GET | SSE stream of new traces |
 | `/correlations` | GET | Recent correlation ids with counts and sources |
 | `/recent` | GET | Most recent traces across all correlations |

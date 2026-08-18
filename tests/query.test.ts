@@ -84,3 +84,43 @@ describe("SSE streaming", () => {
 		expect(received).toContain("/streamed");
 	}, 15_000);
 });
+
+// =============================================================================
+// Incremental reads
+//
+// Its own server: these traces would change the counts the tests above assert.
+// =============================================================================
+
+describe("reading a correlation incrementally", () => {
+	let inc: TestServer;
+
+	beforeAll(async () => {
+		inc = await startServer("query-incremental", 19103);
+		await postJson(`${inc.url}/ingest`, {
+			traces: [
+				trace({ correlation_id: "pair", suffix: "in", timestamp: 100, direction: "->" }),
+				trace({ correlation_id: "pair", suffix: "out", timestamp: 200, direction: "<-" }),
+			],
+		});
+	});
+
+	afterAll(async () => {
+		await inc.stop();
+	});
+
+	test("since_ts returns only what is newer, and completeness still counts the whole chain", async () => {
+		const res = await getJson(`${inc.url}/traces/pair?since_ts=100`);
+
+		expect(res.count).toBe(1);
+		expect(res.traces[0].suffix).toBe("out");
+		// The caller asked for a slice; the chain it belongs to is still complete.
+		expect(res.complete).toBe(true);
+	});
+
+	test("a since_ts past the last trace returns nothing without claiming the chain is unfinished", async () => {
+		const res = await getJson(`${inc.url}/traces/pair?since_ts=200`);
+
+		expect(res.count).toBe(0);
+		expect(res.complete).toBe(true);
+	});
+});

@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { sqlite } from "../db/client";
-import { listRecentCorrelations, queryTraces } from "../db/operations";
+import { countDirections, listRecentCorrelations, queryTraces } from "../db/operations";
 import { ADAPTIVE_HOT_TTL, SSE_HEARTBEAT_INTERVAL } from "../lib/config";
 import { getState, markHot } from "../services/adaptive";
 import { subscribe, unsubscribe } from "../services/streaming";
@@ -36,15 +36,20 @@ queryRouter.get("/traces/:correlationId", (c) => {
 	const previousState = getState(correlationId);
 	markHot(correlationId);
 
-	const rows = queryTraces(correlationId, source);
-
-	// Compute completeness: matching entry/exit pairs
-	let entries = 0;
-	let exits = 0;
-	for (const t of rows) {
-		if (t.direction === "->") entries++;
-		if (t.direction === "<-") exits++;
+	// Incremental read: the caller passes back the newest timestamp it already
+	// holds, so a poller re-reads what arrived instead of the whole chain.
+	const sinceTsParam = c.req.query("since_ts");
+	const sinceTs = sinceTsParam === undefined ? undefined : Number(sinceTsParam);
+	if (sinceTs !== undefined && !Number.isFinite(sinceTs)) {
+		return c.json({ detail: "since_ts must be a number (seconds since epoch)" }, 400);
 	}
+
+	const rows = queryTraces(correlationId, source, sinceTs);
+
+	// Completeness is asked of the CHAIN, never of the slice returned above —
+	// otherwise a caller reading incrementally would see its own finished chain
+	// reported as unfinished.
+	const { entries, exits } = countDirections(correlationId, source);
 	const complete = entries > 0 && entries === exits;
 
 	// Map DB rows to JSON response matching Python output exactly

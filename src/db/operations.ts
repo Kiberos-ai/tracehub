@@ -56,6 +56,9 @@ export function initDb(): void {
 	sqlite.exec(
 		"CREATE INDEX IF NOT EXISTS idx_dedup ON traces(source_id, correlation_id, endpoint, direction)",
 	);
+	// Retention deletes on created_at every hour; without this it reads the whole
+	// table to find the expired rows, and so does the /correlations ordering.
+	sqlite.exec("CREATE INDEX IF NOT EXISTS idx_created_at ON traces(created_at)");
 
 	// Prepare hot-path statements after table exists
 	stmtDedup = sqlite.prepare(`
@@ -171,6 +174,38 @@ export function queryTraces(
 		.where(and(...conditions))
 		.orderBy(traces.timestamp)
 		.all();
+}
+
+/**
+ * Count entry/exit directions across a WHOLE correlation.
+ *
+ * Completeness is a property of the chain, not of the rows a caller happened to
+ * ask for: an incremental read (`sinceTs`) must not be able to turn a finished
+ * chain into an unfinished-looking one, so this deliberately ignores that filter
+ * and aggregates in SQLite rather than materializing the rows.
+ */
+export function countDirections(
+	correlationId: string,
+	sourceId?: string,
+): { entries: number; exits: number } {
+	const rows = db
+		.select({ direction: traces.direction, n: sql<number>`count(*)` })
+		.from(traces)
+		.where(
+			sourceId
+				? and(eq(traces.correlationId, correlationId), eq(traces.sourceId, sourceId))
+				: eq(traces.correlationId, correlationId),
+		)
+		.groupBy(traces.direction)
+		.all();
+
+	let entries = 0;
+	let exits = 0;
+	for (const row of rows) {
+		if (row.direction === "->") entries += row.n;
+		if (row.direction === "<-") exits += row.n;
+	}
+	return { entries, exits };
 }
 
 /**

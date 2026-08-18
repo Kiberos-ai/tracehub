@@ -78,6 +78,28 @@ describe("retention cleanup", () => {
 	}, 30_000);
 });
 
+describe("retention's own scan", () => {
+	// The hourly DELETE selects on created_at. Without an index on that column
+	// SQLite reads every row of the table to find the expired ones — cheap on an
+	// idle instance, and exactly what a busy one cannot afford.
+	test("finds expired rows through an index instead of scanning the table", async () => {
+		server = await startServer("retention-plan", 19108);
+		await postJson(`${server.url}/ingest/single`, trace({ correlation_id: "p", suffix: "p" }));
+
+		// The real statement, not a stand-in: EXPLAIN QUERY PLAN plans it without
+		// running it, so nothing is deleted here.
+		const db = new Database(server.dbPath);
+		const plan = db
+			.query("EXPLAIN QUERY PLAN DELETE FROM traces WHERE created_at < ?")
+			.all(0) as Array<{ detail: string }>;
+		db.close();
+
+		const detail = plan.map((row) => row.detail).join(" | ");
+		expect(detail).toMatch(/USING (COVERING )?INDEX idx_created_at/);
+		expect(detail).not.toContain("SCAN traces");
+	});
+});
+
 describe("database location", () => {
 	// Guardrail: db-outside-tmp. The default must not be a path wiped on reboot.
 	test("defaults outside /tmp", async () => {
@@ -88,7 +110,7 @@ describe("database location", () => {
 
 // Leave no test databases behind even if a test threw mid-way.
 afterEach(() => {
-	for (const name of ["reclaim", "autovac", "retention"]) {
+	for (const name of ["reclaim", "autovac", "retention", "retention-plan"]) {
 		cleanupDb(`./data/test-${name}.db`);
 	}
 });
