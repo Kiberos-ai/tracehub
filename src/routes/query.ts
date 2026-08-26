@@ -1,8 +1,9 @@
 import { Hono } from "hono";
 import { sqlite } from "../db/client";
 import { countDirections, listRecentCorrelations, queryTraces } from "../db/operations";
-import { ADAPTIVE_HOT_TTL, SSE_HEARTBEAT_INTERVAL } from "../lib/config";
+import { ADAPTIVE_HOT_TTL, MAX_LONGPOLL_WAIT, SSE_HEARTBEAT_INTERVAL } from "../lib/config";
 import { getState, markHot } from "../services/adaptive";
+import { addCorrelationWaiter } from "../services/long-poll";
 import { subscribe, unsubscribe } from "../services/streaming";
 
 // =============================================================================
@@ -28,7 +29,33 @@ export function getRecentRequestsTotal(): number {
 
 export const queryRouter = new Hono();
 
-queryRouter.get("/traces/:correlationId", (c) => {
+/** Read the slice a caller asked for, plus the completeness of the whole chain. */
+function readSlice(correlationId: string, source: string | undefined, sinceTs: number | undefined) {
+	const rows = queryTraces(correlationId, source, sinceTs);
+
+	// Completeness is asked of the CHAIN, never of the slice returned above —
+	// otherwise a caller reading incrementally would see its own finished chain
+	// reported as unfinished.
+	const { entries, exits } = countDirections(correlationId, source);
+
+	// Map DB rows to JSON response matching Python output exactly
+	const traces = rows.map((r) => ({
+		source_id: r.sourceId,
+		correlation_id: r.correlationId,
+		timestamp: r.timestamp,
+		suffix: r.suffix,
+		direction: r.direction,
+		operation: r.operation,
+		endpoint: r.endpoint,
+		data: r.data ? JSON.parse(r.data) : null,
+		hostname: r.hostname,
+		raw_line: r.rawLine,
+	}));
+
+	return { traces, complete: entries > 0 && entries === exits };
+}
+
+queryRouter.get("/traces/:correlationId", async (c) => {
 	const correlationId = c.req.param("correlationId");
 	const source = c.req.query("source") ?? undefined;
 
@@ -44,27 +71,20 @@ queryRouter.get("/traces/:correlationId", (c) => {
 		return c.json({ detail: "since_ts must be a number (seconds since epoch)" }, 400);
 	}
 
-	const rows = queryTraces(correlationId, source, sinceTs);
+	// Same long-poll contract as /tracing/config: `Prefer: wait=N`, capped at the
+	// value the server idle timeout was sized for. Absent header = old behaviour.
+	const preferMatch = c.req.header("Prefer")?.match(/wait=(\d+)/);
+	const waitMs = preferMatch ? Math.min(Number(preferMatch[1]), MAX_LONGPOLL_WAIT) * 1000 : 0;
 
-	// Completeness is asked of the CHAIN, never of the slice returned above —
-	// otherwise a caller reading incrementally would see its own finished chain
-	// reported as unfinished.
-	const { entries, exits } = countDirections(correlationId, source);
-	const complete = entries > 0 && entries === exits;
+	let { traces, complete } = readSlice(correlationId, source, sinceTs);
 
-	// Map DB rows to JSON response matching Python output exactly
-	const traces = rows.map((r) => ({
-		source_id: r.sourceId,
-		correlation_id: r.correlationId,
-		timestamp: r.timestamp,
-		suffix: r.suffix,
-		direction: r.direction,
-		operation: r.operation,
-		endpoint: r.endpoint,
-		data: r.data ? JSON.parse(r.data) : null,
-		hostname: r.hostname,
-		raw_line: r.rawLine,
-	}));
+	// Hold only when holding can pay off: nothing new to hand back, more still
+	// expected on this chain, and the caller asked to wait. A finished chain
+	// answers at once — waiting on it would expire every time.
+	if (waitMs > 0 && traces.length === 0 && !complete) {
+		await addCorrelationWaiter(correlationId, waitMs);
+		({ traces, complete } = readSlice(correlationId, source, sinceTs));
+	}
 
 	const responseData: Record<string, unknown> = {
 		correlation_id: correlationId,

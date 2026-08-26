@@ -44,6 +44,21 @@ test("an SSE stream on a silent correlation survives to its first heartbeat", as
 	expect(elapsed).toBeGreaterThan(IDLE_FLOOR_MS);
 }, 30_000);
 
+test("a correlation read held past the idle floor answers instead of dropping", async () => {
+	const started = Date.now();
+	const res = await fetch(`${server.url}/traces/never-starts?since_ts=0`, {
+		headers: { Prefer: "wait=15" },
+	});
+	const elapsed = Date.now() - started;
+	const body = (await res.json()) as { count: number };
+
+	// Nothing is ever ingested for this correlation, so the wait runs its full
+	// course and ends in an empty 200 — a dropped socket throws above instead.
+	expect(res.status).toBe(200);
+	expect(body.count).toBe(0);
+	expect(elapsed).toBeGreaterThan(IDLE_FLOOR_MS);
+}, 30_000);
+
 test("a long poll held past the idle floor answers instead of dropping", async () => {
 	const first = await fetch(`${server.url}/tracing/config`);
 	const etag = first.headers.get("ETag") ?? '"0"';

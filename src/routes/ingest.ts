@@ -4,6 +4,7 @@ import { insertTrace, insertTraces } from "../db/operations";
 import { TraceEntrySchema, TraceIngestRequestSchema } from "../lib/types";
 import type { TraceEntry } from "../lib/types";
 import { authMiddleware } from "../middleware/auth";
+import { notifyCorrelation } from "../services/long-poll";
 import { notifySubscribers } from "../services/streaming";
 
 // =============================================================================
@@ -42,8 +43,14 @@ function trackSourceIngest(sourceId: string, now: number): void {
 // SSE notification — wired to streaming service
 // =============================================================================
 
-/** Callback invoked when a new trace is inserted. Notifies SSE subscribers. */
-const onTraceInserted: (trace: TraceEntry) => void = notifySubscribers;
+/**
+ * Callback invoked when a new trace is inserted: wakes both readers watching
+ * that correlation — the SSE stream, and a /traces read holding on `Prefer: wait`.
+ */
+const onTraceInserted: (trace: TraceEntry) => void = (trace) => {
+	notifySubscribers(trace);
+	notifyCorrelation(trace.correlation_id);
+};
 
 // =============================================================================
 // Router

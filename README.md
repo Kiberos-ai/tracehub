@@ -72,7 +72,7 @@ docker compose up -d
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/traces/{corr_id}` | GET | All traces for a correlation id — also marks it HOT. `?source=` filters by source, `?since_ts=` returns only traces newer than that timestamp (completeness is still judged on the whole chain) |
+| `/traces/{corr_id}` | GET | All traces for a correlation id — also marks it HOT. `?source=` filters by source, `?since_ts=` returns only traces newer than that timestamp (completeness is still judged on the whole chain), `Prefer: wait=N` holds the request until the next trace arrives instead of answering empty |
 | `/traces/{corr_id}/stream` | GET | SSE stream of new traces |
 | `/correlations` | GET | Recent correlation ids with counts and sources |
 | `/recent` | GET | Most recent traces across all correlations |
@@ -114,6 +114,13 @@ sending everything.
 Clients hold a long-poll on `/tracing/config` with `Prefer: wait=30` and an `If-None-Match`
 ETag, so a state change reaches them in about a second without any polling loop. Clients
 that send no `Prefer` header get an immediate answer, which keeps older SDKs working.
+
+Reading takes the same header. `GET /traces/{corr_id}?since_ts=…` with `Prefer: wait=30`
+answers the moment the next trace of that correlation is stored; with nothing new and the
+chain unfinished it holds instead of returning an empty body, so a caller following a live
+chain stops asking in a loop. It never holds pointlessly: a slice that already has
+something to return, or a chain already `complete`, answers at once — as does a request
+with no `Prefer` header, which is exactly the old behaviour.
 
 This state lives in memory only — restarting the server returns every correlation id to
 COLD.

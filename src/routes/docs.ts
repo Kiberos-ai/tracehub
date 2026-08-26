@@ -147,6 +147,13 @@ Returns traces for a correlation ID. First query auto-activates HOT tracing and 
 curl https://tracehub.muid.io/traces/req-123
 \`\`\`
 
+Supports long-poll via \`Prefer: wait=N\`: with nothing newer than \`since_ts\` and the chain
+unfinished, the request is held until the next trace arrives instead of answering empty.
+
+\`\`\`bash
+curl -H "Prefer: wait=30" "https://tracehub.muid.io/traces/req-123?since_ts=1700000000"
+\`\`\`
+
 ### GET /traces/:corrId/stream — SSE real-time stream
 
 \`\`\`bash
@@ -470,7 +477,17 @@ Response:
 }
 \`\`\`
 
-Query params: \`?source=MA\` — filter by source ID prefix.
+Query params: \`?source=MA\` — filter by source ID prefix. \`?since_ts=…\` — return only
+traces newer than that timestamp; \`complete\` is still judged on the whole chain.
+
+Header \`Prefer: wait=N\` (seconds, capped server-side) turns the read into a long poll: it
+answers the moment the next trace of this correlation is stored. It returns immediately
+when the slice is non-empty, when the chain is already \`complete\`, or when the header is
+absent.
+
+\`\`\`bash
+curl -H "Prefer: wait=30" "https://tracehub.muid.io/traces/req-123?since_ts=1700000000"
+\`\`\`
 
 ### GET /traces/:correlationId/stream
 
