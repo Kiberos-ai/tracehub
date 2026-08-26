@@ -182,6 +182,80 @@ export function makeBloatedDb(dbPath: string, rows = 8000): number {
 }
 
 /**
+ * Build a database holding a day of traffic. `shape` picks which day:
+ *
+ * - "spread": many correlations of a few traces each — an ordinary busy instance.
+ * - "loud": the same, plus one chain owning far more recent rows than all the
+ *   others together. That is the shape that breaks paging schemes: they read
+ *   the loud chain's rows over and over while looking for the next distinct one.
+ *
+ * Used to measure what a route costs on a busy instance rather than on the two
+ * rows a functional test leaves behind.
+ */
+export function makeBusyDb(
+	dbPath: string,
+	correlations = 60_000,
+	perCorrelation = 5,
+	shape: "spread" | "loud" = "spread",
+): number {
+	cleanupDb(dbPath);
+	const d = new Database(dbPath);
+	d.exec("PRAGMA journal_mode = WAL");
+	d.exec(`CREATE TABLE traces (
+		id INTEGER PRIMARY KEY AUTOINCREMENT, source_id TEXT NOT NULL,
+		correlation_id TEXT NOT NULL, timestamp REAL NOT NULL, suffix TEXT NOT NULL,
+		direction TEXT NOT NULL, operation TEXT NOT NULL, endpoint TEXT NOT NULL,
+		data TEXT, hostname TEXT, raw_line TEXT,
+		created_at REAL DEFAULT (strftime('%s','now')),
+		UNIQUE(correlation_id, timestamp, suffix))`);
+	d.exec("CREATE INDEX idx_correlation_id ON traces(correlation_id)");
+	d.exec("CREATE INDEX idx_created_at_correlation ON traces(created_at, correlation_id)");
+	const ins = d.prepare(
+		"INSERT INTO traces (source_id,correlation_id,timestamp,suffix,direction,operation,endpoint,data,created_at) VALUES (?,?,?,?,?,?,?,?,?)",
+	);
+	const payload = JSON.stringify({ note: "x".repeat(120) });
+	let n = 0;
+	d.exec("BEGIN");
+	for (let c = 0; c < correlations; c++) {
+		for (let i = 0; i < perCorrelation; i++) {
+			ins.run(
+				`SRC${i % 4}`,
+				`busy-${c}`,
+				n,
+				`s${i}`,
+				i % 2 ? "<-" : "->",
+				"REST",
+				"/e",
+				payload,
+				n,
+			);
+			n++;
+		}
+	}
+	if (shape === "loud") {
+		// One chain, newer than everything above and packed into a few seconds.
+		const base = n;
+		for (let i = 0; i < correlations * perCorrelation; i++) {
+			ins.run(
+				"SRC0",
+				"loud",
+				n,
+				`l${i}`,
+				"->",
+				"REST",
+				"/e",
+				payload,
+				base + Math.floor(i / 40_000),
+			);
+			n++;
+		}
+	}
+	d.exec("COMMIT");
+	d.close();
+	return n;
+}
+
+/**
  * Read an SSE stream until `needle` appears, or give up after `timeoutMs`.
  * Returns everything read, so a failing assertion shows what did arrive.
  */

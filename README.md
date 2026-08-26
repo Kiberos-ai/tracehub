@@ -74,7 +74,7 @@ docker compose up -d
 |----------|--------|-------------|
 | `/traces/{corr_id}` | GET | All traces for a correlation id — also marks it HOT. `?source=` filters by source, `?since_ts=` returns only traces newer than that timestamp (completeness is still judged on the whole chain), `Prefer: wait=N` holds the request until the next trace arrives instead of answering empty |
 | `/traces/{corr_id}/stream` | GET | SSE stream of new traces |
-| `/correlations` | GET | Recent correlation ids with counts and sources |
+| `/correlations` | GET | Recent correlation ids with counts and sources, most recently active first. `?limit=` (1–1000, default 50). Chains sharing one second come in id order — `created_at` is second-grained, and resolving finer would mean reading every row of that second |
 | `/recent` | GET | Most recent traces across all correlations |
 
 ### Adaptive tracing

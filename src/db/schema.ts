@@ -23,6 +23,6 @@ export const traces = sqliteTable(
 		index("idx_timestamp").on(table.timestamp),
 		index("idx_source_id").on(table.sourceId),
 		index("idx_dedup").on(table.sourceId, table.correlationId, table.endpoint, table.direction),
-		index("idx_created_at").on(table.createdAt),
+		index("idx_created_at_correlation").on(table.createdAt, table.correlationId),
 	],
 );

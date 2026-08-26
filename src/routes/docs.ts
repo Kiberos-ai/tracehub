@@ -184,6 +184,8 @@ curl -X POST https://tracehub.muid.io/tracing/disable/req-123
 
 ### GET /correlations — list recent correlation IDs
 
+Most recently active first. \`?limit=\` is 1-1000, default 50.
+
 \`\`\`bash
 curl https://tracehub.muid.io/correlations?limit=50
 \`\`\`
@@ -501,7 +503,17 @@ Events: \`data: {"source_id":"MA",...}\` per trace. Heartbeat \`: ping\` every 1
 
 ### GET /correlations
 
-List recent correlation IDs.
+List correlation IDs, most recently active first, with the trace count, the
+first and last timestamp, the span between them, and the sources that
+contributed. \`?limit=\` is clamped to 1-1000 (default 50).
+
+Chains that share one second are returned in correlation_id order: \`created_at\`
+is second-grained, and ordering them by true recency would mean reading every
+trace of that second.
+
+The cost is proportional to the answer, not to the stored data — the newest
+chains are reached by seeks into an index rather than by grouping the table, so
+a busy instance answers a browse as fast as an idle one.
 
 \`\`\`bash
 curl https://tracehub.muid.io/correlations?limit=50

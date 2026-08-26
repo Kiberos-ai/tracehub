@@ -81,7 +81,9 @@ describe("retention cleanup", () => {
 describe("retention's own scan", () => {
 	// The hourly DELETE selects on created_at. Without an index on that column
 	// SQLite reads every row of the table to find the expired ones — cheap on an
-	// idle instance, and exactly what a busy one cannot afford.
+	// idle instance, and exactly what a busy one cannot afford. The index leads
+	// with created_at and carries correlation_id for the /correlations walk, so
+	// this DELETE and that walk share one index instead of keeping two.
 	test("finds expired rows through an index instead of scanning the table", async () => {
 		server = await startServer("retention-plan", 19108);
 		await postJson(`${server.url}/ingest/single`, trace({ correlation_id: "p", suffix: "p" }));
@@ -95,7 +97,7 @@ describe("retention's own scan", () => {
 		db.close();
 
 		const detail = plan.map((row) => row.detail).join(" | ");
-		expect(detail).toMatch(/USING (COVERING )?INDEX idx_created_at/);
+		expect(detail).toMatch(/USING (COVERING )?INDEX idx_created_at_correlation/);
 		expect(detail).not.toContain("SCAN traces");
 	});
 });
