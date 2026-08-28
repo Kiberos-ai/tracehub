@@ -218,6 +218,35 @@ Secrets live in `/opt/tracehub/.env` and are referenced from `docker-compose.yml
 `${VAR}` — never inline them into a tracked file. Never edit the deployed tree directly:
 changes made there are invisible to everyone else and are lost on the next deploy.
 
+The container is a kibctl bundle (`tracehub` in `/opt/kiberos/bundles.yaml`), so kibctl
+owns its restart policy and boot order: `kibctl restart tracehub` is the door, and the
+restart policy belongs in the bundle rather than in `docker update --restart`.
+
+### When a rebuild is needed, name the build
+
+Only `src/` is mounted; `node_modules` is baked into the image. A change that adds or
+bumps a dependency therefore needs a rebuild, not a restart — a restart would run the new
+code against the old dependency tree and fail at import time.
+
+A rebuild overwrites the `latest` tag, and the build it displaces keeps its layers only
+while some container still references them. That is exactly what happened on 2026-08-28:
+the running container was the sole holder of the 28 May build, which had disappeared from
+the machine's image list entirely, so a reboot would have brought the service back on
+different code. Give every build a second, immutable name so the rollback point survives
+independently of `latest` and of whichever container happens to be alive:
+
+```bash
+cd /opt/tracehub
+docker compose build tracehub
+docker tag tracehub-tracehub:latest "tracehub-tracehub:$(git rev-parse --short HEAD)"
+kibctl restart tracehub
+curl -s https://tracehub.muid.io/health
+```
+
+Rolling back then means pointing the container at the previous tag — which is still there
+because it was named, not because something was still running it. The build now in service
+is tagged `tracehub-tracehub:2026-05-28-known-good`.
+
 ## Documentation federation
 
 TraceHub is the first adopter of the context777 docs-provider model. It embeds
