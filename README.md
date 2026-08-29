@@ -39,10 +39,12 @@ that one id and get the whole chain back, in order, across every host that touch
                 └──────────────────┘
 ```
 
-The server is TypeScript on Bun (Hono for routing, Drizzle over `bun:sqlite`). It was
-rewritten from the original Python/FastAPI implementation in `812da1e`; the Python files
-under `src/tracehub/` are that retired server, kept only because `client.py` still ships as
-the `tracehub` PyPI package.
+The server is TypeScript on Bun (Hono for routing, Drizzle over `bun:sqlite`), rewritten
+from the original Python/FastAPI implementation in `812da1e`. That retired server sat
+unused under `src/tracehub/` until 2026-08, shipped inside the `tracehub` client wheel and
+importing FastAPI, which the package never declared — so it could not have run even if
+something had tried. It is gone from the working tree now; `git show 812da1e` still has it.
+What remains under `src/tracehub/` is the client alone: `client.py` plus its exports.
 
 ## Running it
 

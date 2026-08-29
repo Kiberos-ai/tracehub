@@ -25,3 +25,16 @@ jobs:
 
       - name: Test
         run: bun run test
+
+      # The repository also ships a small Python client (src/tracehub). It had
+      # no tests until 2026-08-29 and drifted unnoticed: the version was
+      # declared in two places that disagreed, and the retired Python server
+      # rode inside the client wheel importing a dependency never declared.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test the Python client
+        run: |
+          python -m pip install --quiet pytest httpx
+          python -m pytest -q

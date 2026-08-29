@@ -1,13 +1,13 @@
 ---
 source_file: "README.md"
-generated_date: "2026-08-28"
-generated_time: "15:12:18"
-generated_timestamp: "2026-08-28T15:12:18.011493"
-file_hash_sha256: "b41cef41996ec09e2071be8e2d0f719baea9b9359502a29d8907d3a46eb3e7c5"
-file_size_bytes: 11212
-total_lines: 260
-word_count: 1539
-char_count: 10725
+generated_date: "2026-08-29"
+generated_time: "17:07:41"
+generated_timestamp: "2026-08-29T17:07:41.974925"
+file_hash_sha256: "4b3b6881a3cf60a0f37789006bda70f2298bdf19fbfcc0288cfaf741ea836885"
+file_size_bytes: 11449
+total_lines: 262
+word_count: 1578
+char_count: 10960
 sections_count: 0
 headers_count: 18
 encoding: "utf-8"
@@ -37,7 +37,7 @@ toc_generator_version: "4.0.0"
 **This TOC is auto-generated with exact line numbers. Trust it completely.**
 
 ### File Structure Overview
-- Total lines: 260
+- Total lines: 262
 - Total sections: 0
 - Total headers (depth ≤ 3): 18
 
@@ -45,22 +45,22 @@ toc_generator_version: "4.0.0"
 
 | Section/Header                                                         | Line(s)    | Description                    | Section Search Command                                      |
 |------------------------------------------------------------------------|------------|--------------------------------|-------------------------------------------------------------|
-| TraceHub                                                               | 1 (260)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*TraceHub" | head -1`                   |
+| TraceHub                                                               | 1 (262)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*TraceHub" | head -1`                   |
 | Overview                                                               | 7 (13)     | [Check section for contents]   | `grep -n "^#\{1,6\}.*Overview" | head -1`                   |
-| Architecture                                                           | 20 (27)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Architecture" | head -1`               |
-| Running it                                                             | 47 (15)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Running\ it" | head -1`                |
-| API                                                                    | 62 (39)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*API" | head -1`                        |
-| ├── Ingest — requires `X-TraceHub-Secret` when a secret is configured  | 64 (7)     | [Check section for contents]   | `grep -n "^#\{1,6\}.*Ingest\ —\ requires\ `X" | head -1`    |
-| ├── Query                                                              | 71 (9)     | [Check section for contents]   | `grep -n "^#\{1,6\}.*Query" | head -1`                      |
-| ├── Adaptive tracing                                                   | 80 (9)     | [Check section for contents]   | `grep -n "^#\{1,6\}.*Adaptive\ tracing" | head -1`          |
-| ├── Admin & docs                                                       | 89 (12)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Admin\ \&\ docs" | head -1`            |
-| Adaptive tracing, in practice                                          | 101 (27)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Adaptive\ tracing,\ in" | head -1`     |
-| Configuration                                                          | 128 (16)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Configuration" | head -1`              |
-| Clients                                                                | 144 (26)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Clients" | head -1`                    |
-| Trace format                                                           | 170 (21)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Trace\ format" | head -1`              |
-| Source IDs                                                             | 191 (12)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Source\ IDs" | head -1`                |
-| Deployment                                                             | 203 (47)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Deployment" | head -1`                 |
-| ├── When a rebuild is needed, name the build                           | 225 (25)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*When\ a\ rebuild\ is\ ne" | head -1`   |
-| Documentation federation                                               | 250 (8)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Documentation\ federa" | head -1`      |
-| License                                                                | 258 (3)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*License" | head -1`                    |
+| Architecture                                                           | 20 (29)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Architecture" | head -1`               |
+| Running it                                                             | 49 (15)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Running\ it" | head -1`                |
+| API                                                                    | 64 (39)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*API" | head -1`                        |
+| ├── Ingest — requires `X-TraceHub-Secret` when a secret is configured  | 66 (7)     | [Check section for contents]   | `grep -n "^#\{1,6\}.*Ingest\ —\ requires\ `X" | head -1`    |
+| ├── Query                                                              | 73 (9)     | [Check section for contents]   | `grep -n "^#\{1,6\}.*Query" | head -1`                      |
+| ├── Adaptive tracing                                                   | 82 (9)     | [Check section for contents]   | `grep -n "^#\{1,6\}.*Adaptive\ tracing" | head -1`          |
+| ├── Admin & docs                                                       | 91 (12)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Admin\ \&\ docs" | head -1`            |
+| Adaptive tracing, in practice                                          | 103 (27)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Adaptive\ tracing,\ in" | head -1`     |
+| Configuration                                                          | 130 (16)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Configuration" | head -1`              |
+| Clients                                                                | 146 (26)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Clients" | head -1`                    |
+| Trace format                                                           | 172 (21)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Trace\ format" | head -1`              |
+| Source IDs                                                             | 193 (12)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Source\ IDs" | head -1`                |
+| Deployment                                                             | 205 (47)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*Deployment" | head -1`                 |
+| ├── When a rebuild is needed, name the build                           | 227 (25)   | [Check section for contents]   | `grep -n "^#\{1,6\}.*When\ a\ rebuild\ is\ ne" | head -1`   |
+| Documentation federation                                               | 252 (8)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*Documentation\ federa" | head -1`      |
+| License                                                                | 260 (3)    | [Check section for contents]   | `grep -n "^#\{1,6\}.*License" | head -1`                    |
 

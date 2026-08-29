@@ -4,7 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tracehub"
-version = "0.1.0"
+# Single source of truth: __version__ in src/tracehub/__init__.py. Declaring it
+# here as well let the two drift — this file said 0.1.0 while the module said
+# 0.2.0, so pip, the wheels and the running code disagreed about what this was.
+dynamic = ["version"]
 description = "Python client for TraceHub — send checkpoint traces to a TraceHub server"
 readme = "README.md"
 license = "Apache-2.0"
@@ -32,9 +35,11 @@ classifiers = [
     "Topic :: Software Development :: Debuggers",
     "Topic :: System :: Logging",
 ]
+# client.py imports nothing beyond the standard library and httpx. pydantic was
+# listed here for the retired Python server, which was removed from the package
+# in 2026-08 — a dependency nothing imports is an install cost for no reason.
 dependencies = [
     "httpx>=0.25.0",
-    "pydantic>=2.0.0",
 ]
 
 # No server extra: the TraceHub server is TypeScript (Bun + Hono) since 812da1e.
@@ -43,6 +48,18 @@ dependencies = [
 [project.urls]
 Homepage = "https://muid.io"
 Repository = "https://github.com/Kiberos-ai/tracehub"
+
+[tool.hatch.version]
+path = "src/tracehub/__init__.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests-python"]
+# tests/ holds the Bun suite for the TypeScript server; the Python client is
+# tested from tests-python/ so neither runner picks up the other's files.
+# `pythonpath` puts this tree ahead of any installed copy — the client IS
+# installed on the machine that develops it, and without this a bare pytest
+# would test the release and report green on code the run never touched.
+pythonpath = ["src"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/tracehub"]

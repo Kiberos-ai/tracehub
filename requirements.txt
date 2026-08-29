@@ -1,4 +1,4 @@
 # TraceHub Python client dependencies.
 # The server itself is TypeScript (Bun + Hono) — see package.json.
+# client.py needs nothing else: standard library plus httpx.
 httpx>=0.26.0
-pydantic>=2.5.0
