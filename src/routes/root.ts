@@ -4,6 +4,13 @@ import { MAX_LONGPOLL_WAIT, TRACEHUB_RETENTION_HOURS } from "../lib/config";
 export const rootRouter = new Hono();
 
 const REPOSITORY = "https://github.com/Kiberos-ai/tracehub";
+const PUBLIC_URL = "https://tracehub.muid.io/";
+
+/** What a preview card has room for — one sentence, no jargon, no endpoints. */
+const CARD_SUMMARY =
+	"When one operation crosses several services, TraceHub keeps what actually " +
+	"happened along the way and gives the whole run back by a single id — in full, " +
+	"live as it happens, or only what is new since you last looked.";
 
 /**
  * What the service answers at its own front door.
@@ -77,7 +84,18 @@ function page(): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TraceHub</title>
+<title>TraceHub — one operation, end to end, across every machine it touched</title>
+<meta name="description" content="${CARD_SUMMARY}">
+<!-- A shared link is seen as a card before it is seen as a page: without these
+     the preview shows a bare address and nobody clicks it. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TraceHub">
+<meta property="og:title" content="TraceHub — one operation, end to end">
+<meta property="og:description" content="${CARD_SUMMARY}">
+<meta property="og:url" content="${PUBLIC_URL}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TraceHub — one operation, end to end">
+<meta name="twitter:description" content="${CARD_SUMMARY}">
 <style>
   :root { color-scheme: light dark; }
   body { max-width: 46rem; margin: 3rem auto; padding: 0 1.25rem;
@@ -115,10 +133,28 @@ this page is also available as JSON to any client that does not ask for HTML.
 `;
 }
 
-rootRouter.get("/", (c) => {
-	const wantsHtml = (c.req.header("Accept") ?? "").includes("text/html");
+/**
+ * Who gets the page, and who has to ask for the data.
+ *
+ * The first version had this backwards: it served HTML only to a client that
+ * said `Accept: text/html`, and JSON to everyone else. Measured 2026-09-03 —
+ * a full browser got the page, but a link preview, a search crawler and a plain
+ * request all got JSON. Those three are exactly how a shared address is first
+ * seen by a person, so the shopfront was invisible to the visitors it is for.
+ *
+ * The page is now the default. Data is served only when it is actually asked
+ * for: ?format=json, or an Accept that names JSON without naming HTML.
+ */
+function wantsJson(accept: string, format: string | undefined): boolean {
+	if (format === "json") return true;
+	if (accept.includes("text/html")) return false;
+	return accept.includes("application/json");
+}
 
-	if (wantsHtml) {
+rootRouter.get("/", (c) => {
+	const accept = c.req.header("Accept") ?? "";
+
+	if (!wantsJson(accept, c.req.query("format"))) {
 		return c.html(page());
 	}
 

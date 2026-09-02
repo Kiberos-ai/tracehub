@@ -29,8 +29,11 @@ describe("the service's front door", () => {
 		expect(html).toContain("Apache");
 	});
 
-	test("anything that does not ask for HTML gets the same facts as JSON", async () => {
-		const res = await fetch(`${server.url}/`);
+	// The page is the default; data is served to a client that asks for it.
+	// This test used to fetch `/` bare and expect JSON, which encoded the very
+	// mistake vibe-marketing-owner measured — see tests/root-visitors.test.ts.
+	test("a client that asks for JSON gets the same facts as data", async () => {
+		const res = await fetch(`${server.url}/`, { headers: { Accept: "application/json" } });
 
 		expect(res.status).toBe(200);
 		expect(res.headers.get("content-type")).toContain("application/json");
@@ -45,7 +48,9 @@ describe("the service's front door", () => {
 	test("every path the front door advertises is one this service really serves", async () => {
 		// The failure this guards: the page drifts from the routes and sends
 		// readers at endpoints that answer 404 — worse than saying nothing.
-		const body = await (await fetch(`${server.url}/`)).json();
+		const body = await (
+			await fetch(`${server.url}/`, { headers: { Accept: "application/json" } })
+		).json();
 
 		for (const entry of body.endpoints) {
 			if (entry.method !== "GET") continue;
