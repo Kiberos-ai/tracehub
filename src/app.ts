@@ -8,6 +8,7 @@ import { docsRouter } from "./routes/docs";
 import { healthRouter } from "./routes/health";
 import { ingestRouter } from "./routes/ingest";
 import { queryRouter } from "./routes/query";
+import { rootRouter } from "./routes/root";
 import { tracingRouter } from "./routes/tracing";
 
 // =============================================================================
@@ -30,7 +31,10 @@ app.use(
 app.use("/*", clientIdMiddleware);
 app.use("/*", rateLimitMiddleware);
 
-// Mount route groups — all paths are baked into the routers
+// Mount route groups — all paths are baked into the routers.
+// rootRouter answers "/" only; it is mounted first so the front door is
+// explicit rather than whatever falls through to the 404 handler.
+app.route("/", rootRouter);
 app.route("/", healthRouter);
 app.route("/", ingestRouter);
 app.route("/", queryRouter);
