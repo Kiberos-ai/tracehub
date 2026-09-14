@@ -221,7 +221,7 @@ Secrets live in `/opt/tracehub/.env` and are referenced from `docker-compose.yml
 changes made there are invisible to everyone else and are lost on the next deploy.
 
 The container is a kibctl bundle (`tracehub` in `/opt/kiberos/bundles.yaml`), so kibctl
-owns its restart policy and boot order: `kibctl restart tracehub` is the door, and the
+owns its restart policy and boot order: `kibctl restart --only tracehub` is the door, and the
 restart policy belongs in the bundle rather than in `docker update --restart`.
 
 ### Taking a copy of the database
@@ -262,9 +262,14 @@ independently of `latest` and of whichever container happens to be alive:
 cd /opt/tracehub
 docker compose build tracehub
 docker tag tracehub-tracehub:latest "tracehub-tracehub:$(git rev-parse --short HEAD)"
-kibctl restart tracehub
+kibctl restart --only tracehub
 curl -s https://tracehub.muid.io/health
 ```
+
+A bare `kibctl restart tracehub` is refused as an extraneous argument, and so is
+`--service tracehub` on its own — a service name can appear in several bundles, so it
+has to be narrowed by `--only <bundle>`. Measured 2026-09-14, after the older form here
+sent a deploy through two failed attempts.
 
 Rolling back then means pointing the container at the previous tag — which is still there
 because it was named, not because something was still running it. The build now in service
