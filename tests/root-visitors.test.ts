@@ -73,6 +73,18 @@ describe("a shared address has to survive being a card before it is a page", () 
 		expect(card).not.toContain("/traces");
 		expect(card).not.toContain("GET");
 	});
+
+	test("title and summary stay short enough that no preview cuts them", async () => {
+		// vibe-marketing-owner wrote both against these limits (53 and 163
+		// characters). A card whose tail is cut loses exactly the half that says
+		// what the service does, so length is part of the copy, not a detail.
+		const html = await (await fetch(`${server.url}/`)).text();
+		const title = html.match(/<title>([^<]+)<\/title>/)?.[1] ?? "";
+		const card = html.match(/property="og:description" content="([^"]+)"/)?.[1] ?? "";
+
+		expect(title.length).toBeLessThanOrEqual(60);
+		expect(card.length).toBeLessThanOrEqual(200);
+	});
 });
 
 describe("data is still reachable, but only when asked for", () => {

@@ -7,10 +7,19 @@ const REPOSITORY = "https://github.com/Kiberos-ai/tracehub";
 const PUBLIC_URL = "https://tracehub.muid.io/";
 
 /** What a preview card has room for — one sentence, no jargon, no endpoints. */
+// Title and card summary are vibe-marketing-owner's copy, taken as written
+// (2026-09-03). Two things he changed and why, so nobody "improves" them back:
+// the title names the CLASS of thing — "distributed tracing" is the phrase a
+// developer actually searches for, and a title that only says what the service
+// does leaves them unsure whether it is a debugger, a log or a monitor. And the
+// summary leads with the reader's problem rather than a "When …" clause, because
+// a preview often cuts the tail and a condition without its conclusion says
+// nothing. He measured both at 53 and 163 characters so neither is truncated.
+const CARD_TITLE = "TraceHub — distributed tracing you can read by one id";
+
 const CARD_SUMMARY =
-	"When one operation crosses several services, TraceHub keeps what actually " +
-	"happened along the way and gives the whole run back by a single id — in full, " +
-	"live as it happens, or only what is new since you last looked.";
+	"One operation crosses several services and its story scatters. TraceHub collects " +
+	"every checkpoint under a single id and gives the whole run back — complete or live.";
 
 /**
  * What the service answers at its own front door.
@@ -84,17 +93,17 @@ function page(): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TraceHub — one operation, end to end, across every machine it touched</title>
+<title>${CARD_TITLE}</title>
 <meta name="description" content="${CARD_SUMMARY}">
 <!-- A shared link is seen as a card before it is seen as a page: without these
      the preview shows a bare address and nobody clicks it. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TraceHub">
-<meta property="og:title" content="TraceHub — one operation, end to end">
+<meta property="og:title" content="${CARD_TITLE}">
 <meta property="og:description" content="${CARD_SUMMARY}">
 <meta property="og:url" content="${PUBLIC_URL}">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TraceHub — one operation, end to end">
+<meta name="twitter:title" content="${CARD_TITLE}">
 <meta name="twitter:description" content="${CARD_SUMMARY}">
 <style>
   :root { color-scheme: light dark; }
@@ -106,6 +115,7 @@ function page(): string {
   td, th { text-align: left; padding: .5rem .6rem; vertical-align: top;
            border-bottom: 1px solid rgba(128,128,128,.28); }
   code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em; }
+  .licence { font-size: 1.05rem; font-weight: 600; margin: 1.25rem 0 .5rem; }
   footer { margin-top: 2.5rem; opacity: .7; font-size: .92rem; }
   a { color: inherit; }
 </style>
@@ -113,6 +123,8 @@ function page(): string {
 <body>
 <h1>TraceHub</h1>
 <p class="lede">${DESCRIPTION}</p>
+
+<p class="licence">Apache&nbsp;License&nbsp;2.0 — run your own copy, no permission needed.</p>
 
 <p>Traces are kept for ${TRACEHUB_RETENTION_HOURS} hours. Sending requires a secret;
 reading does not.</p>
@@ -125,7 +137,7 @@ ${rows}
 </table>
 
 <footer>
-Apache&nbsp;License&nbsp;2.0 · source at <a href="${REPOSITORY}">${REPOSITORY}</a> ·
+Source at <a href="${REPOSITORY}">${REPOSITORY}</a> ·
 this page is also available as JSON to any client that does not ask for HTML.
 </footer>
 </body>
