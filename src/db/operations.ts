@@ -351,10 +351,18 @@ export function cleanupOldTraces(): number {
 	if (result.changes > 0) {
 		// DELETE only marks pages free — without this the file grows forever
 		// under a steady trace load. Incremental keeps the pause short, and the
-		// checkpoint is what actually hands the pages back to the filesystem.
+		// checkpoint below is what actually hands the pages back to the filesystem.
 		sqlite.exec("PRAGMA incremental_vacuum");
-		checkpointTruncate();
 	}
+	// Checkpoint even when nothing was deleted. Everything written since the last
+	// checkpoint lives in the -wal file, so the main database file can sit at a
+	// single page while the service holds thousands of traces — measured on this
+	// code: 1000 traces ingested, main file 4096 bytes, WAL 3.8 MB, and a plain
+	// copy of the main file had no traces table at all. It opened cleanly and
+	// answered every query with silence. People copy this file precisely when an
+	// incident is already underway, so folding the log back hourly matters more
+	// than the freed pages that first motivated the call.
+	checkpointTruncate();
 	return result.changes;
 }
 

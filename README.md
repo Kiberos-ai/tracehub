@@ -224,6 +224,27 @@ The container is a kibctl bundle (`tracehub` in `/opt/kiberos/bundles.yaml`), so
 owns its restart policy and boot order: `kibctl restart tracehub` is the door, and the
 restart policy belongs in the bundle rather than in `docker update --restart`.
 
+### Taking a copy of the database
+
+Never copy `tracehub.db` with `cp` or `docker cp` while the service is running. Under WAL
+every trace written since the last checkpoint lives in the `-wal` file, not in the database
+file — measured here at 1000 live traces with a 4 KB database file, a 3.8 MB log, and a copy
+of the database file that did not contain the traces table at all. That copy opens without
+complaint and answers every query with silence, which is the worst way to fail a person who
+is copying it because something has already gone wrong.
+
+Ask SQLite to write the file instead:
+
+```bash
+docker exec tracehub bun run src/tools/snapshot.ts /data/snapshot-$(date +%F).db
+docker cp tracehub:/data/snapshot-$(date +%F).db ./
+```
+
+It uses `VACUUM INTO`, so it blocks neither readers nor writers, and it prints what the
+snapshot actually holds — read back from the snapshot, not from the live database. The
+hourly retention pass also folds the log back into the database file now, whether or not it
+deleted anything, so the file on disk is never more than an hour behind.
+
 ### When a rebuild is needed, name the build
 
 Only `src/` is mounted; `node_modules` is baked into the image. A change that adds or
